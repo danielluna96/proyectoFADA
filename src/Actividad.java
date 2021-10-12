@@ -1,25 +1,27 @@
+import java.util.Date;
+
 public class Actividad {
     private String nombre;
-    private int horaInicio;
-    private int horaFin;
+    private Date horaInicio;
+    private Date horaFin;
 
-    public Actividad(String nombre, int horaIncio, int horaFin){
+    public Actividad(String nombre, Date horaIncio, Date horaFin){
         this.nombre = nombre;
         this.horaInicio = horaIncio;
         this.horaFin = horaFin;
     }
 
-    public int getHoraInicio() {
+    public Date getHoraInicio() {
         return this.horaInicio;
     }
-    public void setHoraInicio(int horaInicio) {
+    public void setHoraInicio(Date horaInicio) {
         this.horaInicio = horaInicio;
     }
 
-    public int getHoraFin() {
+    public Date getHoraFin() {
         return this.horaFin;
     }
-    public void setHoraFin(int horaFin) {
+    public void setHoraFin(Date horaFin) {
         this.horaFin = horaFin;
     }
 
@@ -36,7 +38,7 @@ public class Actividad {
      */
     public String toString() {
         String cadena = "";
-        cadena += getNombre();
+        cadena += getNombre(); //+ " " + getHoraInicio().toString() + " " + getHoraFin().toString();
         return cadena;
     }
     
