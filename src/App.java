@@ -10,42 +10,47 @@ import java.util.Date;
 public class App {
     public static void main(String[] args) throws Exception {
         
-        /*
-        Actividad  actividad1 = new Actividad("Actividad 1", convertirADate("1:00"), convertirADate("3:00"));
-        Actividad  actividad2 = new Actividad("Actividad 2", convertirADate("4:00"), convertirADate("5:00"));
-        Actividad  actividad3 = new Actividad("Actividad 3", convertirADate("2:00"), convertirADate("3:00"));
-        Actividad  actividad4 = new Actividad("Actividad 4", convertirADate("7:00"), convertirADate("10:00"));
-        Actividad  actividad5 = new Actividad("Actividad 5", convertirADate("5:00"), convertirADate("10:00"));
+        /*//Solo para realizar pruebas rapidas
+        Actividad  actividad1 = new Actividad("Actividad 1", convertirADate("2:00"), convertirADate("5:00"));
+        Actividad  actividad2 = new Actividad("Actividad 2", convertirADate("4:00"), convertirADate("22:00"));
+        Actividad  actividad3 = new Actividad("Actividad 3", convertirADate("22:00"), convertirADate("24:00"));
+        Actividad  actividad4 = new Actividad("Actividad 4", convertirADate("22:00"), convertirADate("23:00"));
+        Actividad  actividad5 = new Actividad("Actividad 5", convertirADate("23:00"), convertirADate("24:00"));
         List<Actividad> listaActividades = new ArrayList<Actividad>(List.of(actividad1, actividad2, actividad3, actividad4, actividad5));
-        Boolean result = verificarCruzadas(listaActividades.get(0), listaActividades.get(2));
-        mostrar(result.toString());
         */
-        
+                
         List<Actividad> listacargadaActividades = new ArrayList<Actividad>(cargar());
-        mostrar(listacargadaActividades.toString());
-        guardarUno(listacargadaActividades, 100); //El número de horas 
-        guardarDos(listacargadaActividades);
-
-        //recursividad(listacargadaActividades, new ArrayList<Actividad>(List.of()));
-    }
-
-    public static boolean verificarCruzadas(Actividad actividad1, Actividad actividad2) {
-        return actividad1.getHoraInicio().before(actividad2.getHoraFin()) && actividad2.getHoraInicio().before(actividad1.getHoraFin());
+        Robot robotbase = new Robot(0, new ArrayList<Actividad>());
+        Robot robotoptimo = new Robot(0, new ArrayList<Actividad>());
+        algoritmo1(robotbase, listacargadaActividades, false, robotoptimo);
+        mostrar(robotoptimo.toString());
+        guardarUno(robotoptimo);
     }
     
-    public static void recursividad(List<Actividad> lista, List<Actividad> listaResultado){
-        for(int index = 0; index < lista.size(); index++){
-            if(lista.size() == 1){
-                listaResultado.add(lista.get(index));
-                mostrar(listaResultado.toString());
+    
+    public static void algoritmo1(Robot robotbase, List<Actividad> listaActividades, Boolean detener, Robot robotoptimo){
+        if(detener){
+            if (robotbase.getHorasTotal() > robotoptimo.getHorasTotal()) {
+                List<Actividad> actividadesRobotBase = robotbase.getActividades();
+                robotoptimo.clear();
+                for (Actividad actividad : actividadesRobotBase) {
+                        robotoptimo.agregarActividad(actividad);
+                }
             }
-            List<Actividad> lista2 = new ArrayList<Actividad>(lista);
-            lista2.remove(index);
-            List<Actividad> listaResultado2 = new ArrayList<Actividad>(listaResultado);
-            listaResultado2.add(lista.get(index));
-            recursividad(lista2, listaResultado2);
+        }else{
+            for (int i = 0; i < listaActividades.size(); i++) {
+                if (!robotbase.existeElemento(listaActividades.get(i))) {                  
+                        robotbase.agregarActividad(listaActividades.get(i));
+                        List<Actividad> listasinultimaactividad = new ArrayList<Actividad>(listaActividades);
+                        listasinultimaactividad.remove(i);
+                        algoritmo1(robotbase, listasinultimaactividad, false, robotoptimo);
+                        robotbase.eliminarElemento(listaActividades.get(i));
+                    } else {
+                        algoritmo1(robotbase, listaActividades, true, robotoptimo);
+                    }
+                }
+            }
         }
-    }
 
     public static void mostrar(String cadena){
         System.out.println(cadena);
@@ -96,7 +101,7 @@ public class App {
     return listaActividades;
     }
 
-    public static void guardarUno(List<Actividad> listaActividades, int horas){
+    public static void guardarUno(Robot robotOptimo){
         try{
             String path="resultadoUno.txt";
             File file = new File(path);
@@ -106,12 +111,12 @@ public class App {
             }
             FileWriter fw = new FileWriter(file.getAbsoluteFile());
             BufferedWriter bw = new BufferedWriter(fw);
-            bw.write(Integer.toString(listaActividades.size()));
+            bw.write(Integer.toString(robotOptimo.listaActividades.size()));
             bw.newLine();
-            bw.write(Integer.toString(horas));
+            bw.write(Integer.toString(robotOptimo.horasTotal));
             bw.newLine();
-            for(int index=0; index < listaActividades.size(); index++){
-                bw.write(listaActividades.get(index).toString());
+            for(int index=0; index < robotOptimo.listaActividades.size(); index++){
+                bw.write(robotOptimo.listaActividades.get(index).toString());
                 bw.newLine();
             }
             bw.close();

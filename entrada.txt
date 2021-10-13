@@ -1,8 +1,6 @@
-7
-Actividad1 5:00 9:00
-Actividad2 6:00 7:00
-Actividad3 7:00 9:00
-Actividad4 8:00 11:00
-Actividad5 9:00 10:00
-Actividad6 10:00 11:00
-Actividad7 11:00 12:00
+5
+Actividad1 2:00 5:00
+Actividad2 7:00 22:00
+Actividad3 22:00 24:00
+Actividad4 22:00 23:00
+Actividad5 23:00 24:00
