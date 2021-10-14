@@ -11,6 +11,11 @@ public class Robot {
         this.listaActividades = new ArrayList<Actividad>(listaActividades);
     }
 
+    public Robot(Robot robot) {
+        this.horasTotal = robot.getHorasTotal();
+        this.listaActividades = new ArrayList<Actividad>(robot.getActividades());
+    }
+
     public int getHorasTotal(){
         return this.horasTotal;
     }

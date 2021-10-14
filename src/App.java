@@ -20,27 +20,47 @@ public class App {
         List<Actividad> listaActividades = new ArrayList<Actividad>(List.of(actividad1, actividad2, actividad3, actividad4, actividad5));
         */
 
-        //generarActividades(30);
+        generarActividades(30);
 
         List<Actividad> listacargadaActividades = new ArrayList<Actividad>(cargar());
-        Robot robotbase = new Robot(0, new ArrayList<Actividad>());
-        Robot robotoptimo = new Robot(0, new ArrayList<Actividad>());
+        Robot robotBase = new Robot(0, new ArrayList<Actividad>());
+        Robot robotOptimo = new Robot(0, new ArrayList<Actividad>());
         //Variables para determinar el tiempo de ejecución
         long tiempoInicio, tiempoFin, tiempo;
 
         //Se toma el tiempo de inicio
         tiempoInicio = System.currentTimeMillis(); 
-        //algoritmo1(robotbase, listacargadaActividades, false, robotoptimo);
-        algoritmo1voraz(robotbase, listacargadaActividades, robotoptimo , convertirADate("00:00"));
-        
 
+        /*  Algoritmo 1
+        Robot resultadoalgoritmo1 = new Robot(robotOptimo);
+        algoritmo1(new Robot(robotBase), new ArrayList<Actividad>(listacargadaActividades), false, resultadoalgoritmo1);
+        mostrar(resultadoalgoritmo1.toString());
+        */
+
+        ///* Para probar el voraz uno individual
+        Robot resultado1 = new Robot(robotOptimo);
+        algoritmo1voraz(new Robot(robotBase), new ArrayList<Actividad>(listacargadaActividades), resultado1, convertirADate("00:00"));
+        mostrar("Voraz 1: \n" + resultado1.toString());
+        //*/
+
+        ///* Para probar el voraz dos individual
+        Robot resultado2 = new Robot(robotOptimo);
+        algoritmo1voraz2(new Robot(robotBase), new ArrayList<Actividad>(listacargadaActividades), resultado2, convertirADate("24:00"));
+        mostrar("Voraz 2: \n" + resultado2.toString());
+        //*/
+
+        /*
+        Robot entreVoraces = new Robot(entreVoraces1(new Robot(robotBase), new ArrayList<Actividad>(listacargadaActividades), new Robot(robotOptimo)));
+        mostrar("Entre voraces: \n" + entreVoraces.toString());
+        */
+
+        
         //Una vez realizado el calculo se procede a determinar la diferencia
         tiempoFin = System.currentTimeMillis();
         tiempo = tiempoFin - tiempoInicio;
         mostrar("Tiempo de ejecución en milisegundos: " + tiempo); 
  
-        mostrar(robotoptimo.toString());
-        guardarUno(robotoptimo);
+        //guardarUno(robotOptimo);
     }
     
     
@@ -52,15 +72,16 @@ public class App {
                 for (Actividad actividad : actividadesRobotBase) {
                         robotoptimo.agregarActividad(actividad);
                 }
+                
             }
         }else{
-            for (int i = 0; i < listaActividades.size(); i++) {
-                if (!robotbase.existeElemento(listaActividades.get(i))) {                  
-                        robotbase.agregarActividad(listaActividades.get(i));
+            for (int index = 0; index < listaActividades.size(); index++) {
+                if (!robotbase.existeElemento(listaActividades.get(index))) {   //Esto implica otro For recorriendo las actividades del Robot               
+                        robotbase.agregarActividad(listaActividades.get(index)); 
                         List<Actividad> listasinultimaactividad = new ArrayList<Actividad>(listaActividades);
-                        listasinultimaactividad.remove(i);
+                        listasinultimaactividad.remove(index);
                         algoritmo1(robotbase, listasinultimaactividad, false, robotoptimo);
-                        robotbase.eliminarElemento(listaActividades.get(i));
+                        robotbase.eliminarElemento(listaActividades.get(index));
                     } else {
                         algoritmo1(robotbase, listaActividades, true, robotoptimo);
                     }
@@ -96,6 +117,50 @@ public class App {
                 horaComprobar = new Time(new Date(horaComprobar.getTime() + (1* 3600000)).getTime());
                 algoritmo1voraz(robotbase, listaActividades, robotoptimo, horaComprobar);
             }
+        }
+    }
+
+    public static void algoritmo1voraz2(Robot robotbase, List<Actividad> listaActividades, Robot robotoptimo ,Date horaComprobar) throws Exception{
+        if(horaComprobar.equals(convertirADate("00:00"))) {
+                robotoptimo.clear();
+                for (Actividad actividad : robotbase.getActividades()) {
+                        robotoptimo.agregarActividad(actividad);
+                }
+        } else {
+            List<Actividad> actividadesSeleccionadas = new ArrayList<>();
+            for(int index=0; index < listaActividades.size(); index++){
+                if(listaActividades.get(index).getHoraFin().equals(horaComprobar)){
+                    actividadesSeleccionadas.add(listaActividades.get(index));
+                    listaActividades.remove(index);
+                }
+            }
+            if(!actividadesSeleccionadas.isEmpty()){
+                Actividad actividadLarga = new Actividad("", horaComprobar, convertirADate("0:00"));
+                for(Actividad actividad : actividadesSeleccionadas){
+                    if(actividad.getHoraInicio().getTime() < actividadLarga.getHoraInicio().getTime()){
+                        actividadLarga = actividad;
+                    }
+                }
+                robotbase.agregarActividad(actividadLarga);
+                horaComprobar = actividadLarga.getHoraInicio();
+                algoritmo1voraz2(robotbase, listaActividades, robotoptimo, horaComprobar);
+            } else {
+                horaComprobar = new Time(new Date(horaComprobar.getTime() - (1* 3600000)).getTime());
+                algoritmo1voraz2(robotbase, listaActividades, robotoptimo, horaComprobar);
+            }
+        }
+    }
+
+    public static Robot entreVoraces1(Robot robotBase, List<Actividad> listaActividades, Robot robotOptimo) throws Exception {
+        Robot base1 = new Robot(robotBase), base2 = new Robot(robotBase);
+        Robot optimo1 = new Robot(robotOptimo), optimo2 = new Robot(robotOptimo);
+        List<Actividad> lista1 = new ArrayList<Actividad>(listaActividades), lista2 = new ArrayList<Actividad>(listaActividades);
+        algoritmo1voraz(base1, lista1, optimo1 , convertirADate("00:00"));
+        algoritmo1voraz2(base2, lista2, optimo2 , convertirADate("24:00"));
+        if(optimo1.getHorasTotal() > optimo2.getHorasTotal()){
+            return optimo1;
+        } else {
+            return optimo2;
         }
     }
 
