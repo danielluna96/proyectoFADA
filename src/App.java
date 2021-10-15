@@ -3,7 +3,6 @@ import java.sql.Time;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.List;
-import java.util.Random;
 import java.util.regex.Pattern;
 import java.util.ArrayList;
 import java.util.Date;
@@ -20,7 +19,7 @@ public class App {
         List<Actividad> listaActividades = new ArrayList<Actividad>(List.of(actividad1, actividad2, actividad3, actividad4, actividad5));
         */
 
-        //generarActividades(30);
+        //generarActividades(50);
 
         List<Actividad> listacargadaActividades = new ArrayList<Actividad>(cargar());
         Robot robotBase = new Robot(0, 0, new ArrayList<Actividad>());
@@ -31,33 +30,32 @@ public class App {
         //Se toma el tiempo de inicio
         tiempoInicio = System.currentTimeMillis(); 
 
-        /*  Algoritmo 1
-        Robot resultadoalgoritmo1 = new Robot(robotOptimo);
-        algoritmo1(new Robot(robotBase), new ArrayList<Actividad>(listacargadaActividades), false, resultadoalgoritmo1);
-        mostrar(resultadoalgoritmo1.toString());
+        /*  Algoritmo 1 del Problema 1
+        Robot resultadoAlgoritmo1Problema1 = new Robot(robotOptimo);
+        algoritmo1Problema1(new Robot(robotBase), new ArrayList<Actividad>(listacargadaActividades), false, resultadoAlgoritmo1Problema1);
+        mostrar("Algoritmo 1 Problema 1: \n" + resultadoAlgoritmo1Problema1.toString());
+        guardarProblema1("algoritmo1", resultadoAlgoritmo1Problema1);
         */
 
-        /* Para probar el voraz uno individual
-        Robot resultado1 = new Robot(robotOptimo);
-        algoritmo1voraz(new Robot(robotBase), new ArrayList<Actividad>(listacargadaActividades), resultado1, convertirADate("00:00"));
-        mostrar("Voraz 1: \n" + resultado1.toString());
+        /* Algoritmo 2 del Problema 1 Solución Voraz
+        Robot resultadoAlgoritmo2Problema1 = new Robot(robotOptimo);
+        algoritmo2Problema1(new Robot(robotBase), new ArrayList<Actividad>(listacargadaActividades), resultadresultadoAlgoritmo2Problema1o1, convertirADate("00:00"));
+        mostrar("Algoritmo 2 Problema 1: \n" + resultadoAlgoritmo2Problema1.toString());
+        guardarProblema1("algoritmo2", resultadoAlgoritmo2Problema1);
         */
 
-        /* Para probar el voraz dos individual
-        Robot resultado2 = new Robot(robotOptimo);
-        algoritmo1voraz2(new Robot(robotBase), new ArrayList<Actividad>(listacargadaActividades), resultado2, convertirADate("24:00"));
-        mostrar("Voraz 2: \n" + resultado2.toString());
+        /* Algoritmo 3 del Problema 1 Solución Voraz Que recorre de forma inversa
+        Robot resultadoAlgoritmo3Problema1 = new Robot(robotOptimo);
+        algoritmo3Problema1(new Robot(robotBase), new ArrayList<Actividad>(listacargadaActividades), resultadoAlgoritmo3Problema1, convertirADate("24:00"));
+        mostrar("Algoritmo 3 Problema 1: \n" + resultadoAlgoritmo3Problema1.toString());
+        guardarProblema1("algoritmo3", resultadoAlgoritmo3Problema1);
         */
 
-        /*
-        Robot entreVoraces = new Robot(entreVoraces1(new Robot(robotBase), new ArrayList<Actividad>(listacargadaActividades), new Robot(robotOptimo)));
-        mostrar("Entre voraces: \n" + entreVoraces.toString());
-        */
-
-        ///* 
-        Robot resultado3 = new Robot(robotOptimo);
-        algoritmo2voraz(new Robot(robotBase), new ArrayList<Actividad>(listacargadaActividades), resultado3, convertirADate("00:00"));
-        mostrar("2 Algoritmo Voraz: \n" + resultado3.toString());
+        ///* Algoritmo 1 del Problema 2 Solución Voraz Que recorre de forma inversa
+        Robot resultadoAlgoritmo1Problema2 = new Robot(robotOptimo);
+        algoritmo1Problema2(new Robot(robotBase), new ArrayList<Actividad>(listacargadaActividades), resultadoAlgoritmo1Problema2, convertirADate("00:00"));
+        mostrar("Algoritmo 1 Problema 2: \n" + resultadoAlgoritmo1Problema2.toString());
+        guardarProblema2("algoritmo1", resultadoAlgoritmo1Problema2);
         //*/    
         
         //Una vez realizado el calculo se procede a determinar la diferencia
@@ -69,7 +67,7 @@ public class App {
     }
     
     
-    public static void algoritmo1(Robot robotbase, List<Actividad> listaActividades, Boolean detener, Robot robotoptimo){
+    public static void algoritmo1Problema1(Robot robotbase, List<Actividad> listaActividades, Boolean detener, Robot robotoptimo){
         if(detener){
             if (robotbase.getHorasTotal() > robotoptimo.getHorasTotal()) {
                 List<Actividad> actividadesRobotBase = robotbase.getActividades();
@@ -85,16 +83,16 @@ public class App {
                         robotbase.agregarActividad(listaActividades.get(index)); 
                         List<Actividad> listasinultimaactividad = new ArrayList<Actividad>(listaActividades);
                         listasinultimaactividad.remove(index);
-                        algoritmo1(robotbase, listasinultimaactividad, false, robotoptimo);
+                        algoritmo1Problema1(robotbase, listasinultimaactividad, false, robotoptimo);
                         robotbase.eliminarElemento(listaActividades.get(index));
                     } else {
-                        algoritmo1(robotbase, listaActividades, true, robotoptimo);
+                        algoritmo1Problema1(robotbase, listaActividades, true, robotoptimo);
                     }
                 }
             }
         }
 
-    public static void algoritmo1voraz(Robot robotbase, List<Actividad> listaActividades, Robot robotoptimo ,Date horaComprobar) throws Exception{
+    public static void algoritmo2Problema1(Robot robotbase, List<Actividad> listaActividades, Robot robotoptimo ,Date horaComprobar) throws Exception{
         if(horaComprobar.equals(convertirADate("24:00"))) {
                 robotoptimo.clear();
                 for (Actividad actividad : robotbase.getActividades()) {
@@ -117,15 +115,15 @@ public class App {
                 }
                 robotbase.agregarActividad(actividadLarga);
                 horaComprobar = actividadLarga.getHoraFin();
-                algoritmo1voraz(robotbase, listaActividades, robotoptimo, horaComprobar);
+                algoritmo2Problema1(robotbase, listaActividades, robotoptimo, horaComprobar);
             } else {
                 horaComprobar = new Time(new Date(horaComprobar.getTime() + (1* 3600000)).getTime());
-                algoritmo1voraz(robotbase, listaActividades, robotoptimo, horaComprobar);
+                algoritmo2Problema1(robotbase, listaActividades, robotoptimo, horaComprobar);
             }
         }
     }
 
-    public static void algoritmo1voraz2(Robot robotbase, List<Actividad> listaActividades, Robot robotoptimo ,Date horaComprobar) throws Exception{
+    public static void algoritmo3Problema1(Robot robotbase, List<Actividad> listaActividades, Robot robotoptimo ,Date horaComprobar) throws Exception{
         if(horaComprobar.equals(convertirADate("00:00"))) {
                 robotoptimo.clear();
                 for (Actividad actividad : robotbase.getActividades()) {
@@ -148,28 +146,15 @@ public class App {
                 }
                 robotbase.agregarActividad(actividadLarga);
                 horaComprobar = actividadLarga.getHoraInicio();
-                algoritmo1voraz2(robotbase, listaActividades, robotoptimo, horaComprobar);
+                algoritmo3Problema1(robotbase, listaActividades, robotoptimo, horaComprobar);
             } else {
                 horaComprobar = new Time(new Date(horaComprobar.getTime() - (1* 3600000)).getTime());
-                algoritmo1voraz2(robotbase, listaActividades, robotoptimo, horaComprobar);
+                algoritmo3Problema1(robotbase, listaActividades, robotoptimo, horaComprobar);
             }
         }
     }
 
-    public static Robot entreVoraces1(Robot robotBase, List<Actividad> listaActividades, Robot robotOptimo) throws Exception {
-        Robot base1 = new Robot(robotBase), base2 = new Robot(robotBase);
-        Robot optimo1 = new Robot(robotOptimo), optimo2 = new Robot(robotOptimo);
-        List<Actividad> lista1 = new ArrayList<Actividad>(listaActividades), lista2 = new ArrayList<Actividad>(listaActividades);
-        algoritmo1voraz(base1, lista1, optimo1 , convertirADate("00:00"));
-        algoritmo1voraz2(base2, lista2, optimo2 , convertirADate("24:00"));
-        if(optimo1.getHorasTotal() > optimo2.getHorasTotal()){
-            return optimo1;
-        } else {
-            return optimo2;
-        }
-    }
-
-    public static void algoritmo2voraz(Robot robotbase, List<Actividad> listaActividades, Robot robotoptimo ,Date horaComprobar) throws Exception{
+    public static void algoritmo1Problema2(Robot robotbase, List<Actividad> listaActividades, Robot robotoptimo ,Date horaComprobar) throws Exception{
         if(horaComprobar.equals(convertirADate("24:00"))) {
                 robotoptimo.clear();
                 for (Actividad actividad : robotbase.getActividades()) {
@@ -192,10 +177,10 @@ public class App {
                 }
                 robotbase.agregarActividad(actividadcorta);
                 horaComprobar = actividadcorta.getHoraFin();
-                algoritmo2voraz(robotbase, listaActividades, robotoptimo, horaComprobar);
+                algoritmo1Problema2(robotbase, listaActividades, robotoptimo, horaComprobar);
             } else {
                 horaComprobar = new Time(new Date(horaComprobar.getTime() + (1* 3600000)).getTime());
-                algoritmo2voraz(robotbase, listaActividades, robotoptimo, horaComprobar);
+                algoritmo1Problema2(robotbase, listaActividades, robotoptimo, horaComprobar);
             }
         }
     }
@@ -264,8 +249,8 @@ public class App {
             bw.newLine();
             for(int index=0; index < n; index++){
                 int a, b;
-                a = new Random().nextInt(1, 24+1);
-                b = new Random().nextInt(0, a);
+                a = (int)(Math.random()*24+1);
+                b = (int)(Math.random()*a);
                 bw.write("Actividad"+Integer.toString(index+1) + " " + b + ":00 " + a + ":00");
                 bw.newLine();
             }
@@ -276,9 +261,9 @@ public class App {
         }
     }
 
-    public static void guardarUno(Robot robotOptimo){
+    public static void guardarProblema1(String rotulo, Robot robotOptimo){
         try{
-            String path="resultadoUno.txt";
+            String path = rotulo + "Problema1.txt";
             File file = new File(path);
 
             if (!file.exists()) {
@@ -301,9 +286,9 @@ public class App {
         }
     }
 
-    public static void guardarDos(List<Actividad> listaActividades){
+    public static void guardarProblema2(String rotulo, Robot robotOptimo){
         try{
-            String path="resultadoDos.txt";
+            String path = rotulo + "Problema2.txt";
             File file = new File(path);
 
             if (!file.exists()) {
@@ -311,10 +296,10 @@ public class App {
             }
             FileWriter fw = new FileWriter(file.getAbsoluteFile());
             BufferedWriter bw = new BufferedWriter(fw);
-            bw.write(Integer.toString(listaActividades.size()));
+            bw.write(Integer.toString(robotOptimo.getActividades().size()));
             bw.newLine();
-            for(int index=0; index < listaActividades.size(); index++){
-                bw.write(listaActividades.get(index).toString());
+            for(int index=0; index < robotOptimo.getActividades().size(); index++){
+                bw.write(robotOptimo.getActividades().get(index).toString());
                 bw.newLine();
             }
             bw.close();
