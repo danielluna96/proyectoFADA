@@ -4,10 +4,12 @@ import java.util.List;
 public class Robot {
     
     int horasTotal = 0;
+    int cantidadActividades = 0;
     List<Actividad> listaActividades = new ArrayList<Actividad>(List.of());
 
-    public Robot(int horasTotal, List<Actividad> listaActividades){
+    public Robot(int horasTotal, int cantidadActividades, List<Actividad> listaActividades){
         this.horasTotal = horasTotal;
+        this.cantidadActividades = horasTotal;
         this.listaActividades = new ArrayList<Actividad>(listaActividades);
     }
 
@@ -22,6 +24,14 @@ public class Robot {
 
     public void setHorasTotal(int horasTotal){
         this.horasTotal = horasTotal;
+    }
+
+    public int getCantidadActividades(){
+        return this.cantidadActividades;
+    }
+
+    public void setCantidadActividades(int cantidadActividades){
+        this.cantidadActividades = cantidadActividades;
     }
 
     public List<Actividad> getActividades(){
@@ -41,7 +51,8 @@ public class Robot {
         for (int i = 0; i < this.listaActividades.size(); i++) {
             if (this.listaActividades.get(i).equals(actividad)) {
                 this.listaActividades.remove(actividad); //el elemento fuera
-                this.horasTotal -= (actividad.getHoraFin().getTime() - actividad.getHoraInicio().getTime())/3600000; //Reduce el peso
+                this.horasTotal -= (actividad.getHoraFin().getTime() - actividad.getHoraInicio().getTime())/3600000; //Reduce el 
+                this.cantidadActividades -= 1;
                 break;
             }
         }
@@ -68,6 +79,7 @@ public class Robot {
     public void agregarActividad(Actividad actividad) {
         this.listaActividades.add(actividad);
         this.horasTotal += (actividad.getHoraFin().getTime() - actividad.getHoraInicio().getTime())/3600000;
+        this.cantidadActividades += 1;
     }
 
     
@@ -82,7 +94,7 @@ public class Robot {
                 cadena+=listaActividades.get(index).toString()+"\n";
             }
         }
-        cadena+="Horas: " + getHorasTotal();
+        cadena+="Horas: " + getHorasTotal() + "\n" + "Cantidad: " + getCantidadActividades();
         return cadena;
     }
 

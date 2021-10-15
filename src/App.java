@@ -20,11 +20,11 @@ public class App {
         List<Actividad> listaActividades = new ArrayList<Actividad>(List.of(actividad1, actividad2, actividad3, actividad4, actividad5));
         */
 
-        generarActividades(30);
+        //generarActividades(30);
 
         List<Actividad> listacargadaActividades = new ArrayList<Actividad>(cargar());
-        Robot robotBase = new Robot(0, new ArrayList<Actividad>());
-        Robot robotOptimo = new Robot(0, new ArrayList<Actividad>());
+        Robot robotBase = new Robot(0, 0, new ArrayList<Actividad>());
+        Robot robotOptimo = new Robot(0, 0, new ArrayList<Actividad>());
         //Variables para determinar el tiempo de ejecución
         long tiempoInicio, tiempoFin, tiempo;
 
@@ -37,23 +37,28 @@ public class App {
         mostrar(resultadoalgoritmo1.toString());
         */
 
-        ///* Para probar el voraz uno individual
+        /* Para probar el voraz uno individual
         Robot resultado1 = new Robot(robotOptimo);
         algoritmo1voraz(new Robot(robotBase), new ArrayList<Actividad>(listacargadaActividades), resultado1, convertirADate("00:00"));
         mostrar("Voraz 1: \n" + resultado1.toString());
-        //*/
+        */
 
-        ///* Para probar el voraz dos individual
+        /* Para probar el voraz dos individual
         Robot resultado2 = new Robot(robotOptimo);
         algoritmo1voraz2(new Robot(robotBase), new ArrayList<Actividad>(listacargadaActividades), resultado2, convertirADate("24:00"));
         mostrar("Voraz 2: \n" + resultado2.toString());
-        //*/
+        */
 
         /*
         Robot entreVoraces = new Robot(entreVoraces1(new Robot(robotBase), new ArrayList<Actividad>(listacargadaActividades), new Robot(robotOptimo)));
         mostrar("Entre voraces: \n" + entreVoraces.toString());
         */
 
+        ///* 
+        Robot resultado3 = new Robot(robotOptimo);
+        algoritmo2voraz(new Robot(robotBase), new ArrayList<Actividad>(listacargadaActividades), resultado3, convertirADate("00:00"));
+        mostrar("2 Algoritmo Voraz: \n" + resultado3.toString());
+        //*/    
         
         //Una vez realizado el calculo se procede a determinar la diferencia
         tiempoFin = System.currentTimeMillis();
@@ -161,6 +166,37 @@ public class App {
             return optimo1;
         } else {
             return optimo2;
+        }
+    }
+
+    public static void algoritmo2voraz(Robot robotbase, List<Actividad> listaActividades, Robot robotoptimo ,Date horaComprobar) throws Exception{
+        if(horaComprobar.equals(convertirADate("24:00"))) {
+                robotoptimo.clear();
+                for (Actividad actividad : robotbase.getActividades()) {
+                        robotoptimo.agregarActividad(actividad);
+                }
+        } else {
+            List<Actividad> actividadesSeleccionadas = new ArrayList<>();
+            for(int index=0; index < listaActividades.size(); index++){
+                if(listaActividades.get(index).getHoraInicio().equals(horaComprobar)){
+                    actividadesSeleccionadas.add(listaActividades.get(index));
+                    listaActividades.remove(index);
+                }
+            }
+            if(!actividadesSeleccionadas.isEmpty()){
+                Actividad actividadcorta = new Actividad("", horaComprobar, convertirADate("24:00"));
+                for(Actividad actividad : actividadesSeleccionadas){
+                    if(actividad.getHoraFin().getTime() < actividadcorta.getHoraFin().getTime() || actividadcorta.getNombre() == ""){
+                        actividadcorta = actividad;
+                    }
+                }
+                robotbase.agregarActividad(actividadcorta);
+                horaComprobar = actividadcorta.getHoraFin();
+                algoritmo2voraz(robotbase, listaActividades, robotoptimo, horaComprobar);
+            } else {
+                horaComprobar = new Time(new Date(horaComprobar.getTime() + (1* 3600000)).getTime());
+                algoritmo2voraz(robotbase, listaActividades, robotoptimo, horaComprobar);
+            }
         }
     }
 
