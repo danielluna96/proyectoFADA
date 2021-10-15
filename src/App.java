@@ -19,51 +19,53 @@ public class App {
         List<Actividad> listaActividades = new ArrayList<Actividad>(List.of(actividad1, actividad2, actividad3, actividad4, actividad5));
         */
 
-        //generarActividades(50);
+        //generarActividades(30);
 
         List<Actividad> listacargadaActividades = new ArrayList<Actividad>(cargar());
         Robot robotBase = new Robot(0, 0, new ArrayList<Actividad>());
         Robot robotOptimo = new Robot(0, 0, new ArrayList<Actividad>());
         //Variables para determinar el tiempo de ejecución
         long tiempoInicio, tiempoFin, tiempo;
-
-        //Se toma el tiempo de inicio
+  
+        ///*  Algoritmo 1 del Problema 1 Todas las posibles combinaciones Muy Costosa
         tiempoInicio = System.currentTimeMillis(); 
-
-        /*  Algoritmo 1 del Problema 1
         Robot resultadoAlgoritmo1Problema1 = new Robot(robotOptimo);
         algoritmo1Problema1(new Robot(robotBase), new ArrayList<Actividad>(listacargadaActividades), false, resultadoAlgoritmo1Problema1);
-        mostrar("Algoritmo 1 Problema 1: \n" + resultadoAlgoritmo1Problema1.toString());
-        guardarProblema1("algoritmo1", resultadoAlgoritmo1Problema1);
-        */
-
-        /* Algoritmo 2 del Problema 1 Solución Voraz
-        Robot resultadoAlgoritmo2Problema1 = new Robot(robotOptimo);
-        algoritmo2Problema1(new Robot(robotBase), new ArrayList<Actividad>(listacargadaActividades), resultadresultadoAlgoritmo2Problema1o1, convertirADate("00:00"));
-        mostrar("Algoritmo 2 Problema 1: \n" + resultadoAlgoritmo2Problema1.toString());
-        guardarProblema1("algoritmo2", resultadoAlgoritmo2Problema1);
-        */
-
-        /* Algoritmo 3 del Problema 1 Solución Voraz Que recorre de forma inversa
-        Robot resultadoAlgoritmo3Problema1 = new Robot(robotOptimo);
-        algoritmo3Problema1(new Robot(robotBase), new ArrayList<Actividad>(listacargadaActividades), resultadoAlgoritmo3Problema1, convertirADate("24:00"));
-        mostrar("Algoritmo 3 Problema 1: \n" + resultadoAlgoritmo3Problema1.toString());
-        guardarProblema1("algoritmo3", resultadoAlgoritmo3Problema1);
-        */
-
-        ///* Algoritmo 1 del Problema 2 Solución Voraz Que recorre de forma inversa
-        Robot resultadoAlgoritmo1Problema2 = new Robot(robotOptimo);
-        algoritmo1Problema2(new Robot(robotBase), new ArrayList<Actividad>(listacargadaActividades), resultadoAlgoritmo1Problema2, convertirADate("00:00"));
-        mostrar("Algoritmo 1 Problema 2: \n" + resultadoAlgoritmo1Problema2.toString());
-        guardarProblema2("algoritmo1", resultadoAlgoritmo1Problema2);
-        //*/    
-        
-        //Una vez realizado el calculo se procede a determinar la diferencia
         tiempoFin = System.currentTimeMillis();
         tiempo = tiempoFin - tiempoInicio;
-        mostrar("Tiempo de ejecución en milisegundos: " + tiempo); 
- 
-        //guardarUno(robotOptimo);
+        mostrar("Problema 1 Algoritmo 1: \n" + resultadoAlgoritmo1Problema1.toString() + "\nTiempo de ejecución en ms: " + tiempo + "\n-----------------------------");
+        guardarProblema1("Algoritmo1", resultadoAlgoritmo1Problema1);
+        //*/
+
+        ///* Algoritmo 2 del Problema 1 Solución Voraz
+        tiempoInicio = System.currentTimeMillis(); 
+        Robot resultadoAlgoritmo2Problema1 = new Robot(robotOptimo);
+        algoritmo2Problema1(new Robot(robotBase), new ArrayList<Actividad>(listacargadaActividades), resultadoAlgoritmo2Problema1, convertirADate("00:00"));
+        tiempoFin = System.currentTimeMillis();
+        tiempo = tiempoFin - tiempoInicio;
+        mostrar("Problema 1 Algoritmo 2: \n" + resultadoAlgoritmo2Problema1.toString() + "\nTiempo de ejecución en ms: " + tiempo + "\n-----------------------------");
+        guardarProblema1("Algoritmo2", resultadoAlgoritmo2Problema1);
+        //*/
+
+        ///* Algoritmo 3 del Problema 1 Solución Voraz Que recorre de forma inversa
+        tiempoInicio = System.currentTimeMillis(); 
+        Robot resultadoAlgoritmo3Problema1 = new Robot(robotOptimo);
+        algoritmo3Problema1(new Robot(robotBase), new ArrayList<Actividad>(listacargadaActividades), resultadoAlgoritmo3Problema1, convertirADate("24:00"));
+        tiempoFin = System.currentTimeMillis();
+        tiempo = tiempoFin - tiempoInicio;
+        mostrar("Problema 1 Algoritmo 3: \n" + resultadoAlgoritmo3Problema1.toString() + "\nTiempo de ejecución en ms: " + tiempo + "\n-----------------------------");
+        guardarProblema1("Algoritmo3", resultadoAlgoritmo3Problema1);
+        //*/
+
+        ///* Algoritmo 1 del Problema 2 Solución Voraz Que recorre de forma inversa
+        tiempoInicio = System.currentTimeMillis(); 
+        Robot resultadoAlgoritmo1Problema2 = new Robot(robotOptimo);
+        algoritmo1Problema2(new Robot(robotBase), new ArrayList<Actividad>(listacargadaActividades), resultadoAlgoritmo1Problema2, convertirADate("00:00"));
+        tiempoFin = System.currentTimeMillis();
+        tiempo = tiempoFin - tiempoInicio;
+        mostrar("Problema 2 Algoritmo 1: \n" + resultadoAlgoritmo1Problema2.toString() + "\nTiempo de ejecución en ms: " + tiempo + "\n-----------------------------");
+        guardarProblema2("Algoritmo1", resultadoAlgoritmo1Problema2);
+        //*/    
     }
     
     
@@ -263,7 +265,7 @@ public class App {
 
     public static void guardarProblema1(String rotulo, Robot robotOptimo){
         try{
-            String path = rotulo + "Problema1.txt";
+            String path = "problema1" + rotulo + ".txt";
             File file = new File(path);
 
             if (!file.exists()) {
@@ -288,7 +290,7 @@ public class App {
 
     public static void guardarProblema2(String rotulo, Robot robotOptimo){
         try{
-            String path = rotulo + "Problema2.txt";
+            String path = "problema2" + rotulo + ".txt";
             File file = new File(path);
 
             if (!file.exists()) {

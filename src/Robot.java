@@ -41,6 +41,7 @@ public class Robot {
     public void clear(){
         this.listaActividades.clear();
         this.horasTotal = 0;
+        this.cantidadActividades = 0;
     }
 
     /**
