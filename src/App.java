@@ -10,16 +10,16 @@ import java.util.Date;
 public class App {
     public static void main(String[] args) throws Exception {
         
-        /*//Solo para realizar pruebas rapidas
+        ///*//Solo para realizar pruebas rapidas
         Actividad  actividad5 = new Actividad("Actividad 1", convertirADate("2:00"), convertirADate("5:00"));
         Actividad  actividad4 = new Actividad("Actividad 2", convertirADate("5:00"), convertirADate("7:00"));
         Actividad  actividad3 = new Actividad("Actividad 3", convertirADate("8:00"), convertirADate("20:00"));
         Actividad  actividad2 = new Actividad("Actividad 4", convertirADate("22:00"), convertirADate("23:00"));
         Actividad  actividad1 = new Actividad("Actividad 5", convertirADate("23:00"), convertirADate("24:00"));
         List<Actividad> listaActividades = new ArrayList<Actividad>(List.of(actividad1, actividad2, actividad3, actividad4, actividad5));
-        */
+        //*/
 
-        //generarActividades(30);
+        generarActividades(40);
 
         List<Actividad> listacargadaActividades = new ArrayList<Actividad>(cargar());
         Robot robotBase = new Robot(0, 0, new ArrayList<Actividad>());
@@ -27,7 +27,7 @@ public class App {
         //Variables para determinar el tiempo de ejecución
         long tiempoInicio, tiempoFin, tiempo;
   
-        ///*  Algoritmo 1 del Problema 1 Todas las posibles combinaciones Muy Costosa
+        /*  Algoritmo 1 del Problema 1 Todas las posibles combinaciones Muy Costosa
         tiempoInicio = System.currentTimeMillis(); 
         Robot resultadoAlgoritmo1Problema1 = new Robot(robotOptimo);
         algoritmo1Problema1(new Robot(robotBase), new ArrayList<Actividad>(listacargadaActividades), false, resultadoAlgoritmo1Problema1);
@@ -35,6 +35,16 @@ public class App {
         tiempo = tiempoFin - tiempoInicio;
         mostrar("Problema 1 Algoritmo 1: \n" + resultadoAlgoritmo1Problema1.toString() + "\nTiempo de ejecución en ms: " + tiempo + "\n-----------------------------");
         guardarProblema1("Algoritmo1", resultadoAlgoritmo1Problema1);
+        */
+
+        ///*  Algoritmo 1 del Problema 1 Todas las posibles combinaciones Muy Costosa
+        tiempoInicio = System.currentTimeMillis(); 
+        Robot resultadoAlgoritmo1Problema1Variante = new Robot(robotOptimo);
+        algoritmo1Problema1Variante(new Robot(robotBase), new ArrayList<Actividad>(listacargadaActividades), false, resultadoAlgoritmo1Problema1Variante);
+        tiempoFin = System.currentTimeMillis();
+        tiempo = tiempoFin - tiempoInicio;
+        mostrar("Problema 1 Algoritmo 1 Variante: \n" + resultadoAlgoritmo1Problema1Variante.toString() + "\nTiempo de ejecución en ms: " + tiempo + "\n-----------------------------");
+        guardarProblema1("Algoritmo1Variante", resultadoAlgoritmo1Problema1Variante);
         //*/
 
         ///* Algoritmo 2 del Problema 1 Solución Voraz
@@ -57,7 +67,7 @@ public class App {
         guardarProblema1("Algoritmo3", resultadoAlgoritmo3Problema1);
         //*/
 
-        ///* Algoritmo 1 del Problema 2 Solución Voraz Que recorre de forma inversa
+        /* Algoritmo 1 del Problema 2 Solución Voraz Que recorre de forma inversa
         tiempoInicio = System.currentTimeMillis(); 
         Robot resultadoAlgoritmo1Problema2 = new Robot(robotOptimo);
         algoritmo1Problema2(new Robot(robotBase), new ArrayList<Actividad>(listacargadaActividades), resultadoAlgoritmo1Problema2, convertirADate("00:00"));
@@ -65,9 +75,18 @@ public class App {
         tiempo = tiempoFin - tiempoInicio;
         mostrar("Problema 2 Algoritmo 1: \n" + resultadoAlgoritmo1Problema2.toString() + "\nTiempo de ejecución en ms: " + tiempo + "\n-----------------------------");
         guardarProblema2("Algoritmo1", resultadoAlgoritmo1Problema2);
-        //*/    
+        */   
+        
+        ///* Algoritmo 2 del Problema 2 Solución Voraz Que recorre de forma inversa
+        tiempoInicio = System.currentTimeMillis(); 
+        Robot resultadoAlgoritmo2Problema2 = new Robot(robotOptimo);
+        algoritmo2Problema2(new Robot(robotBase), new ArrayList<Actividad>(listacargadaActividades), false, resultadoAlgoritmo2Problema2);
+        tiempoFin = System.currentTimeMillis();
+        tiempo = tiempoFin - tiempoInicio;
+        mostrar("Problema 2 Algoritmo 2: \n" + resultadoAlgoritmo2Problema2.toString() + "\nTiempo de ejecución en ms: " + tiempo + "\n-----------------------------");
+        guardarProblema2("Algoritmo2", resultadoAlgoritmo2Problema2);
+        //*/  
     }
-    
     
     public static void algoritmo1Problema1(Robot robotbase, List<Actividad> listaActividades, Boolean detener, Robot robotoptimo){
         if(detener){
@@ -79,9 +98,11 @@ public class App {
                 }
                 
             }
+        }else if(robotoptimo.getHorasTotal() == 24){
+        
         }else{
             for (int index = 0; index < listaActividades.size(); index++) {
-                if (!robotbase.existeElemento(listaActividades.get(index))) {   //Esto implica otro For recorriendo las actividades del Robot               
+                if (!robotbase.verificarCruzada(listaActividades.get(index))) {   //Esto implica otro For recorriendo las actividades del Robot               
                         robotbase.agregarActividad(listaActividades.get(index)); 
                         List<Actividad> listasinultimaactividad = new ArrayList<Actividad>(listaActividades);
                         listasinultimaactividad.remove(index);
@@ -90,6 +111,38 @@ public class App {
                     } else {
                         algoritmo1Problema1(robotbase, listaActividades, true, robotoptimo);
                     }
+                }
+            }
+        }
+    
+    public static void algoritmo1Problema1Variante(Robot robotbase, List<Actividad> listaActividades, Boolean detener, Robot robotoptimo){
+        if(detener){
+            if (robotbase.getHorasTotal() > robotoptimo.getHorasTotal()) {
+                List<Actividad> actividadesRobotBase = robotbase.getActividades();
+                robotoptimo.clear();
+                for (Actividad actividad : actividadesRobotBase) {
+                        robotoptimo.agregarActividad(actividad);
+                }
+                
+            }
+        }else if(robotoptimo.getHorasTotal() == 24){
+        }else{
+            for (int index = 0; index < listaActividades.size(); index++) {
+                List<Actividad> listasinimcompatibles = new ArrayList<Actividad>();
+                Actividad actividad = listaActividades.get(index);
+                robotbase.agregarActividad(actividad); 
+                for(int i = 0; i<listaActividades.size(); i++){
+                    if(!seCruzan(actividad,listaActividades.get(i))){
+                        listasinimcompatibles.add(listaActividades.get(i));
+                    }
+                }
+                if(listasinimcompatibles.size() == 0){
+                    algoritmo1Problema1Variante(robotbase, listasinimcompatibles, true, robotoptimo);
+                } else{
+                    algoritmo1Problema1Variante(robotbase, listasinimcompatibles, false, robotoptimo);
+                }
+                robotbase.eliminarElemento(actividad); 
+                //
                 }
             }
         }
@@ -186,7 +239,43 @@ public class App {
             }
         }
     }
+        
+    public static void algoritmo2Problema2(Robot robotbase, List<Actividad> listaActividades, Boolean detener, Robot robotoptimo){
+        if(detener){
+            if (robotbase.getCantidadActividades() > robotoptimo.getCantidadActividades()) {
+                List<Actividad> actividadesRobotBase = robotbase.getActividades();
+                robotoptimo.clear();
+                for (Actividad actividad : actividadesRobotBase) {
+                        robotoptimo.agregarActividad(actividad);
+                }
+            }
+        }else if(robotoptimo.getCantidadActividades() == 24){
+        }else{
+            for (int index = 0; index < listaActividades.size(); index++) {
+                List<Actividad> listasinimcompatibles = new ArrayList<Actividad>();
+                Actividad actividad = listaActividades.get(index);
+                robotbase.agregarActividad(actividad); 
+                for(int i = 0; i<listaActividades.size(); i++){
+                    if(!seCruzan(actividad,listaActividades.get(i))){
+                        listasinimcompatibles.add(listaActividades.get(i));
+                    }
+                }
+                if(listasinimcompatibles.size() == 0){
+                    algoritmo2Problema2(robotbase, listasinimcompatibles, true, robotoptimo);
+                } else{
+                    algoritmo2Problema2(robotbase, listasinimcompatibles, false, robotoptimo);
+                }
+                robotbase.eliminarElemento(actividad); 
+                }
+            }
+        }
 
+    public static boolean seCruzan(Actividad a1, Actividad a2){
+        if (a1.getHoraInicio().before(a2.getHoraFin()) && a2.getHoraInicio().before(a1.getHoraFin())) {
+            return true;
+        }else {return false;}
+    }
+    
     public static void mostrar(String cadena){
         System.out.println(cadena);
     }
@@ -197,7 +286,34 @@ public class App {
         Time ppstime = new Time(date.getTime());
         return ppstime;
     }
-    
+
+    public static void generarActividades(int n){
+        try{
+            String path="entrada.txt";
+            File file = new File(path);
+
+            if (!file.exists()) {
+                file.createNewFile();
+            }
+            FileWriter fw = new FileWriter(file.getAbsoluteFile());
+            BufferedWriter bw = new BufferedWriter(fw);
+            
+            bw.write(Integer.toString(n));
+            bw.newLine();
+            for(int index=0; index < n; index++){
+                int a, b;
+                a = (int)(Math.random()*24+1);
+                b = (int)(Math.random()*a);
+                bw.write("Actividad"+Integer.toString(index+1) + " " + b + ":00 " + a + ":00");
+                bw.newLine();
+            }
+            bw.close();
+        }
+        catch(Exception e){
+            System.out.println(e);
+        }
+    }
+
     public static ArrayList<Actividad> cargar(){
         ArrayList<Actividad> listaActividades = new ArrayList<Actividad>(List.of());
         try{
@@ -234,33 +350,6 @@ public class App {
         System.out.println(e);
     }
     return listaActividades;
-    }
-
-    public static void generarActividades(int n){
-        try{
-            String path="entrada.txt";
-            File file = new File(path);
-
-            if (!file.exists()) {
-                file.createNewFile();
-            }
-            FileWriter fw = new FileWriter(file.getAbsoluteFile());
-            BufferedWriter bw = new BufferedWriter(fw);
-            
-            bw.write(Integer.toString(n));
-            bw.newLine();
-            for(int index=0; index < n; index++){
-                int a, b;
-                a = (int)(Math.random()*24+1);
-                b = (int)(Math.random()*a);
-                bw.write("Actividad"+Integer.toString(index+1) + " " + b + ":00 " + a + ":00");
-                bw.newLine();
-            }
-            bw.close();
-        }
-        catch(Exception e){
-            System.out.println(e);
-        }
     }
 
     public static void guardarProblema1(String rotulo, Robot robotOptimo){

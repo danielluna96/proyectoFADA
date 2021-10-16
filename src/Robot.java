@@ -64,7 +64,7 @@ public class Robot {
      * @param e
      * @return 
      */
-    public boolean existeElemento(Actividad actividad) {
+    public boolean verificarCruzada(Actividad actividad) {
         for (int i = 0; i < this.listaActividades.size(); i++) {
             if (listaActividades.get(i).getHoraInicio().before(actividad.getHoraFin()) && actividad.getHoraInicio().before(listaActividades.get(i).getHoraFin())) {
                 return true;
