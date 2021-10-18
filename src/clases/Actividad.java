@@ -47,7 +47,7 @@ public class Actividad {
      */
     public String toString() {
         String cadena = "";
-        cadena += getNombre() + " " + getHoraInicio().toString() + " " + getHoraFin().toString();
+        cadena += getNombre() + " | " + getHoraInicio().toString() + " | " + getHoraFin().toString();
         return cadena;
     }
     

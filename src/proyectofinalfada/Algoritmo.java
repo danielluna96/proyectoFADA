@@ -2,7 +2,12 @@ package proyectofinalfada;
 
 import clases.Actividad;
 import clases.Robot;
+import gui.VentanaAlgoritmos;
+import java.awt.FileDialog;
+import java.awt.Frame;
 import java.io.*;
+import java.nio.file.DirectoryStream.Filter;
+import java.nio.file.*;
 import java.sql.Time;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
@@ -10,11 +15,39 @@ import java.util.List;
 import java.util.regex.Pattern;
 import java.util.ArrayList;
 import java.util.Date;
+import javax.swing.JFileChooser;
+import javax.swing.filechooser.*;
 
 public class Algoritmo {
     public Algoritmo() throws Exception {
         
-        ///*//Solo para realizar pruebas rapidas
+        VentanaAlgoritmos interfaz = new VentanaAlgoritmos();
+        interfaz.setVisible(true);
+        interfaz.setResizable(false);
+        interfaz.setLocationRelativeTo(null); 
+        
+        //generarActividades(50);
+        
+        Robot robotBase = new Robot(0, 0, new ArrayList<Actividad>());
+        Robot robotOptimo = new Robot(0, 0, new ArrayList<Actividad>());
+        
+        //Variables para determinar el tiempo de ejecución
+        long tiempoInicio, tiempoFin, tiempo;
+        
+        //Se inicia jfc
+        List<Actividad> listacargadaActividades = new ArrayList<Actividad>(cargarEntrada(selectEntrada()));
+        interfaz.setJListEntrada(listacargadaActividades);
+        
+        ///*  Algoritmo Organizar Entrada
+        tiempoInicio = System.currentTimeMillis(); 
+        List<Actividad> listaActividadesOrganizadas = new ArrayList<Actividad>(organizarActividades(listacargadaActividades));
+        tiempoFin = System.currentTimeMillis();
+        tiempo = tiempoFin - tiempoInicio;
+        interfaz.setJListEntradaOrdenada(listaActividadesOrganizadas, tiempo);
+        //*/
+        
+        //mostrar(listacargadaActividades.toString());
+        ///*Solo para realizar pruebas rapidas
         Actividad  actividad1 = new Actividad("Actividad 1", convertirADate("2:00"), convertirADate("5:00"));
         Actividad  actividad2 = new Actividad("Actividad 2", convertirADate("5:00"), convertirADate("7:00"));
         Actividad  actividad3 = new Actividad("Actividad 3", convertirADate("2:00"), convertirADate("4:00"));
@@ -23,13 +56,7 @@ public class Algoritmo {
         List<Actividad> listaActividades = new ArrayList<Actividad>(List.of(actividad1, actividad2, actividad3, actividad4, actividad5));
         //*/
 
-        generarActividades(100);
-        List<Actividad> listacargadaActividades = new ArrayList<Actividad>(cargar());
-        List<Actividad> listaActividadesOrganizadas = new ArrayList<Actividad>(organizarActividades(listacargadaActividades));
-        Robot robotBase = new Robot(0, 0, new ArrayList<Actividad>());
-        Robot robotOptimo = new Robot(0, 0, new ArrayList<Actividad>());
-        //Variables para determinar el tiempo de ejecución
-        long tiempoInicio, tiempoFin, tiempo;
+
   
         ///*  Algoritmo 1 del Problema 1 Todas las posibles combinaciones Muy Costosa
         tiempoInicio = System.currentTimeMillis(); 
@@ -38,6 +65,7 @@ public class Algoritmo {
         tiempoFin = System.currentTimeMillis();
         tiempo = tiempoFin - tiempoInicio;
         mostrar("Problema 1 Algoritmo 1: \n" + resultadoAlgoritmo1Problema1.toString() + "\nTiempo de ejecución en ms: " + tiempo + "\n-----------------------------");
+        interfaz.setJListAlgoritmo1Problema1(resultadoAlgoritmo1Problema1, tiempo);
         guardarProblema1("Algoritmo1", resultadoAlgoritmo1Problema1);
         //*/
 
@@ -48,6 +76,7 @@ public class Algoritmo {
         tiempoFin = System.currentTimeMillis();
         tiempo = tiempoFin - tiempoInicio;
         mostrar("Problema 1 Algoritmo 1 Variante: \n" + resultadoAlgoritmo1Problema1Variante.toString() + "\nTiempo de ejecución en ms: " + tiempo + "\n-----------------------------");
+        interfaz.setJListAlgoritmo1Problema1Variante(resultadoAlgoritmo1Problema1Variante, tiempo);
         guardarProblema1("Algoritmo1Variante", resultadoAlgoritmo1Problema1Variante);
         //*/
 
@@ -58,6 +87,7 @@ public class Algoritmo {
         tiempoFin = System.currentTimeMillis();
         tiempo = tiempoFin - tiempoInicio;
         mostrar("Problema 1 Algoritmo 2: \n" + resultadoAlgoritmo2Problema1.toString() + "\nTiempo de ejecución en ms: " + tiempo + "\n-----------------------------");
+        interfaz.setJListAlgoritmo2Problema1(resultadoAlgoritmo2Problema1, tiempo);
         guardarProblema1("Algoritmo2", resultadoAlgoritmo2Problema1);
         //*/
 
@@ -68,6 +98,7 @@ public class Algoritmo {
         tiempoFin = System.currentTimeMillis();
         tiempo = tiempoFin - tiempoInicio;
         mostrar("Problema 1 Algoritmo 3: \n" + resultadoAlgoritmo3Problema1.toString() + "\nTiempo de ejecución en ms: " + tiempo + "\n-----------------------------");
+        interfaz.setJListAlgoritmo3Problema1(resultadoAlgoritmo3Problema1, tiempo);
         guardarProblema1("Algoritmo3", resultadoAlgoritmo3Problema1);
         //*/
 
@@ -78,6 +109,7 @@ public class Algoritmo {
         tiempoFin = System.currentTimeMillis();
         tiempo = tiempoFin - tiempoInicio;
         mostrar("Problema 2 Algoritmo 1: \n" + resultadoAlgoritmo1Problema2.toString() + "\nTiempo de ejecución en ms: " + tiempo + "\n-----------------------------");
+        interfaz.setJListAlgoritmo1Problema2(resultadoAlgoritmo1Problema2, tiempo);
         guardarProblema2("Algoritmo1", resultadoAlgoritmo1Problema2);
         //*/   
         
@@ -88,10 +120,28 @@ public class Algoritmo {
         tiempoFin = System.currentTimeMillis();
         tiempo = tiempoFin - tiempoInicio;
         mostrar("Problema 2 Algoritmo 2: \n" + resultadoAlgoritmo2Problema2.toString() + "\nTiempo de ejecución en ms: " + tiempo + "\n-----------------------------");
+        interfaz.setJListAlgoritmo2Problema2(resultadoAlgoritmo2Problema2, tiempo);
         guardarProblema2("Algoritmo2", resultadoAlgoritmo2Problema2);
         //*/  
         
     }
+    
+    public static File selectEntrada(){
+                JFileChooser jfc = new JFileChooser(FileSystemView.getFileSystemView().getHomeDirectory());
+                jfc.setAcceptAllFileFilterUsed(false);
+                FileNameExtensionFilter filter = new FileNameExtensionFilter("Documentos de texto (*.txt)", "txt");
+		jfc.addChoosableFileFilter(filter);
+                Path currentRelativePath = Paths.get("");
+                String directoryActual = currentRelativePath.toAbsolutePath().toString();
+                jfc.setCurrentDirectory(new File(directoryActual));
+                String path = "";
+		int returnValue = jfc.showOpenDialog(null);
+		if (returnValue == JFileChooser.APPROVE_OPTION) {
+			File selectedFile = jfc.getSelectedFile();
+			path = selectedFile.getAbsolutePath();
+		}  
+                return new File(path);
+    }    
     
     public static void algoritmo1Problema1(Robot robotbase, List<Actividad> listaActividades, Boolean detener, Robot robotoptimo){
         if(detener){
@@ -347,10 +397,10 @@ public class Algoritmo {
         }
     }
 
-    public static ArrayList<Actividad> cargar(){
+    public static ArrayList<Actividad> cargarEntrada(File file){
         ArrayList<Actividad> listaActividades = new ArrayList<Actividad>(List.of());
         try{
-            File file = new File("entrada.txt");
+            //File file = new File("entrada.txt");
             BufferedReader br = new BufferedReader(new FileReader(file));
             String st;
             int counter = 1;
