@@ -1,3 +1,6 @@
+package clases;
+
+import java.util.ArrayList;
 import java.util.Date;
 
 public class Actividad {
@@ -9,6 +12,12 @@ public class Actividad {
         this.nombre = nombre;
         this.horaInicio = horaIncio;
         this.horaFin = horaFin;
+    }
+    
+    public Actividad(Actividad actividad) {
+        this.nombre = actividad.getNombre();
+        this.horaInicio = actividad.getHoraInicio();
+        this.horaFin = actividad.getHoraFin();
     }
 
     public Date getHoraInicio() {
@@ -38,7 +47,7 @@ public class Actividad {
      */
     public String toString() {
         String cadena = "";
-        cadena += getNombre(); //+ " " + getHoraInicio().toString() + " " + getHoraFin().toString();
+        cadena += getNombre() + " " + getHoraInicio().toString() + " " + getHoraFin().toString();
         return cadena;
     }
     

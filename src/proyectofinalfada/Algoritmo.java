@@ -1,3 +1,7 @@
+package proyectofinalfada;
+
+import clases.Actividad;
+import clases.Robot;
 import java.io.*;
 import java.sql.Time;
 import java.text.DateFormat;
@@ -7,40 +11,40 @@ import java.util.regex.Pattern;
 import java.util.ArrayList;
 import java.util.Date;
 
-public class App {
-    public static void main(String[] args) throws Exception {
+public class Algoritmo {
+    public Algoritmo() throws Exception {
         
         ///*//Solo para realizar pruebas rapidas
-        Actividad  actividad5 = new Actividad("Actividad 1", convertirADate("2:00"), convertirADate("5:00"));
-        Actividad  actividad4 = new Actividad("Actividad 2", convertirADate("5:00"), convertirADate("7:00"));
-        Actividad  actividad3 = new Actividad("Actividad 3", convertirADate("8:00"), convertirADate("20:00"));
-        Actividad  actividad2 = new Actividad("Actividad 4", convertirADate("22:00"), convertirADate("23:00"));
-        Actividad  actividad1 = new Actividad("Actividad 5", convertirADate("23:00"), convertirADate("24:00"));
+        Actividad  actividad1 = new Actividad("Actividad 1", convertirADate("2:00"), convertirADate("5:00"));
+        Actividad  actividad2 = new Actividad("Actividad 2", convertirADate("5:00"), convertirADate("7:00"));
+        Actividad  actividad3 = new Actividad("Actividad 3", convertirADate("2:00"), convertirADate("4:00"));
+        Actividad  actividad4 = new Actividad("Actividad 4", convertirADate("1:00"), convertirADate("3:00"));
+        Actividad  actividad5 = new Actividad("Actividad 5", convertirADate("4:00"), convertirADate("9:00"));
         List<Actividad> listaActividades = new ArrayList<Actividad>(List.of(actividad1, actividad2, actividad3, actividad4, actividad5));
         //*/
 
-        generarActividades(40);
-
+        generarActividades(100);
         List<Actividad> listacargadaActividades = new ArrayList<Actividad>(cargar());
+        List<Actividad> listaActividadesOrganizadas = new ArrayList<Actividad>(organizarActividades(listacargadaActividades));
         Robot robotBase = new Robot(0, 0, new ArrayList<Actividad>());
         Robot robotOptimo = new Robot(0, 0, new ArrayList<Actividad>());
         //Variables para determinar el tiempo de ejecución
         long tiempoInicio, tiempoFin, tiempo;
   
-        /*  Algoritmo 1 del Problema 1 Todas las posibles combinaciones Muy Costosa
+        ///*  Algoritmo 1 del Problema 1 Todas las posibles combinaciones Muy Costosa
         tiempoInicio = System.currentTimeMillis(); 
         Robot resultadoAlgoritmo1Problema1 = new Robot(robotOptimo);
-        algoritmo1Problema1(new Robot(robotBase), new ArrayList<Actividad>(listacargadaActividades), false, resultadoAlgoritmo1Problema1);
+        algoritmo1Problema1(new Robot(robotBase), new ArrayList<Actividad>(listaActividadesOrganizadas), false, resultadoAlgoritmo1Problema1);
         tiempoFin = System.currentTimeMillis();
         tiempo = tiempoFin - tiempoInicio;
         mostrar("Problema 1 Algoritmo 1: \n" + resultadoAlgoritmo1Problema1.toString() + "\nTiempo de ejecución en ms: " + tiempo + "\n-----------------------------");
         guardarProblema1("Algoritmo1", resultadoAlgoritmo1Problema1);
-        */
+        //*/
 
         ///*  Algoritmo 1 del Problema 1 Todas las posibles combinaciones Muy Costosa
         tiempoInicio = System.currentTimeMillis(); 
         Robot resultadoAlgoritmo1Problema1Variante = new Robot(robotOptimo);
-        algoritmo1Problema1Variante(new Robot(robotBase), new ArrayList<Actividad>(listacargadaActividades), false, resultadoAlgoritmo1Problema1Variante);
+        algoritmo1Problema1Variante(new Robot(robotBase), new ArrayList<Actividad>(listaActividadesOrganizadas), false, resultadoAlgoritmo1Problema1Variante);
         tiempoFin = System.currentTimeMillis();
         tiempo = tiempoFin - tiempoInicio;
         mostrar("Problema 1 Algoritmo 1 Variante: \n" + resultadoAlgoritmo1Problema1Variante.toString() + "\nTiempo de ejecución en ms: " + tiempo + "\n-----------------------------");
@@ -50,7 +54,7 @@ public class App {
         ///* Algoritmo 2 del Problema 1 Solución Voraz
         tiempoInicio = System.currentTimeMillis(); 
         Robot resultadoAlgoritmo2Problema1 = new Robot(robotOptimo);
-        algoritmo2Problema1(new Robot(robotBase), new ArrayList<Actividad>(listacargadaActividades), resultadoAlgoritmo2Problema1, convertirADate("00:00"));
+        algoritmo2Problema1(new Robot(robotBase), new ArrayList<Actividad>(listaActividadesOrganizadas), resultadoAlgoritmo2Problema1, convertirADate("00:00"));
         tiempoFin = System.currentTimeMillis();
         tiempo = tiempoFin - tiempoInicio;
         mostrar("Problema 1 Algoritmo 2: \n" + resultadoAlgoritmo2Problema1.toString() + "\nTiempo de ejecución en ms: " + tiempo + "\n-----------------------------");
@@ -60,32 +64,33 @@ public class App {
         ///* Algoritmo 3 del Problema 1 Solución Voraz Que recorre de forma inversa
         tiempoInicio = System.currentTimeMillis(); 
         Robot resultadoAlgoritmo3Problema1 = new Robot(robotOptimo);
-        algoritmo3Problema1(new Robot(robotBase), new ArrayList<Actividad>(listacargadaActividades), resultadoAlgoritmo3Problema1, convertirADate("24:00"));
+        algoritmo3Problema1(new Robot(robotBase), new ArrayList<Actividad>(listaActividadesOrganizadas), resultadoAlgoritmo3Problema1, convertirADate("24:00"));
         tiempoFin = System.currentTimeMillis();
         tiempo = tiempoFin - tiempoInicio;
         mostrar("Problema 1 Algoritmo 3: \n" + resultadoAlgoritmo3Problema1.toString() + "\nTiempo de ejecución en ms: " + tiempo + "\n-----------------------------");
         guardarProblema1("Algoritmo3", resultadoAlgoritmo3Problema1);
         //*/
 
-        /* Algoritmo 1 del Problema 2 Solución Voraz Que recorre de forma inversa
+        ///* Algoritmo 1 del Problema 2 Solución Voraz Que recorre de forma inversa
         tiempoInicio = System.currentTimeMillis(); 
         Robot resultadoAlgoritmo1Problema2 = new Robot(robotOptimo);
-        algoritmo1Problema2(new Robot(robotBase), new ArrayList<Actividad>(listacargadaActividades), resultadoAlgoritmo1Problema2, convertirADate("00:00"));
+        algoritmo1Problema2(new Robot(robotBase), new ArrayList<Actividad>(listaActividadesOrganizadas), resultadoAlgoritmo1Problema2, convertirADate("00:00"));
         tiempoFin = System.currentTimeMillis();
         tiempo = tiempoFin - tiempoInicio;
         mostrar("Problema 2 Algoritmo 1: \n" + resultadoAlgoritmo1Problema2.toString() + "\nTiempo de ejecución en ms: " + tiempo + "\n-----------------------------");
         guardarProblema2("Algoritmo1", resultadoAlgoritmo1Problema2);
-        */   
+        //*/   
         
         ///* Algoritmo 2 del Problema 2 Solución Voraz Que recorre de forma inversa
         tiempoInicio = System.currentTimeMillis(); 
         Robot resultadoAlgoritmo2Problema2 = new Robot(robotOptimo);
-        algoritmo2Problema2(new Robot(robotBase), new ArrayList<Actividad>(listacargadaActividades), false, resultadoAlgoritmo2Problema2);
+        algoritmo2Problema2(new Robot(robotBase), new ArrayList<Actividad>(listaActividadesOrganizadas), false, resultadoAlgoritmo2Problema2);
         tiempoFin = System.currentTimeMillis();
         tiempo = tiempoFin - tiempoInicio;
         mostrar("Problema 2 Algoritmo 2: \n" + resultadoAlgoritmo2Problema2.toString() + "\nTiempo de ejecución en ms: " + tiempo + "\n-----------------------------");
         guardarProblema2("Algoritmo2", resultadoAlgoritmo2Problema2);
         //*/  
+        
     }
     
     public static void algoritmo1Problema1(Robot robotbase, List<Actividad> listaActividades, Boolean detener, Robot robotoptimo){
@@ -286,6 +291,34 @@ public class App {
         Time ppstime = new Time(date.getTime());
         return ppstime;
     }
+    
+    public static List<Actividad> organizarActividades(List<Actividad> listaaOrganizar){
+        List<Actividad> listaResultado = new ArrayList<Actividad>(); 
+        for(int index = 0; index < listaaOrganizar.size(); index++){
+                listaResultado.add(listaaOrganizar.get(index));
+                Actividad actividadAComparar = listaaOrganizar.get(index);
+                boolean detener = false;
+                for(int i=0; i < listaResultado.size() && !detener; i++){
+                    if(actividadAComparar.getHoraInicio().getTime() <= listaResultado.get(i).getHoraInicio().getTime()){
+                        if(actividadAComparar.getHoraInicio().getTime() == listaResultado.get(i).getHoraInicio().getTime() && !(actividadAComparar.getHoraFin().getTime() < listaResultado.get(i).getHoraFin().getTime())){
+                        } else {
+                            Actividad actividadRespaldo1 =  new Actividad(listaResultado.get(i));
+                            Actividad actividadRespaldo2;
+                            listaResultado.set(i, actividadAComparar);
+                            for(int a=i+1; a<listaResultado.size(); a++){
+                                actividadRespaldo2 = new Actividad(listaResultado.get(a));
+                                listaResultado.set(a, actividadRespaldo1);
+                                actividadRespaldo1 = new Actividad(actividadRespaldo2);    
+                            } 
+                            
+                            //listaResultado.add(actividadRespaldo1);
+                            detener = true;
+                        }
+                    }
+                }
+            }
+        return listaResultado;  
+    }
 
     public static void generarActividades(int n){
         try{
@@ -362,12 +395,12 @@ public class App {
             }
             FileWriter fw = new FileWriter(file.getAbsoluteFile());
             BufferedWriter bw = new BufferedWriter(fw);
-            bw.write(Integer.toString(robotOptimo.listaActividades.size()));
+            bw.write(Integer.toString(robotOptimo.getActividades().size()));
             bw.newLine();
-            bw.write(Integer.toString(robotOptimo.horasTotal));
+            bw.write(Integer.toString(robotOptimo.getHorasTotal()));
             bw.newLine();
-            for(int index=0; index < robotOptimo.listaActividades.size(); index++){
-                bw.write(robotOptimo.listaActividades.get(index).toString());
+            for(int index=0; index < robotOptimo.getActividades().size(); index++){
+                bw.write(robotOptimo.getActividades().get(index).toString());
                 bw.newLine();
             }
             bw.close();
