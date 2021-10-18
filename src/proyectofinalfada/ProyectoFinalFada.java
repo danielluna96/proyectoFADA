@@ -4,6 +4,8 @@
  */
 package proyectofinalfada;
 
+import gui.VentanaAlgoritmos;
+
 /**
  *
  * @author danie
@@ -14,7 +16,10 @@ public class ProyectoFinalFada {
      * @param args the command line arguments
      */
     public static void main(String[] args) throws Exception {
-        Algoritmo algoritmo = new Algoritmo();
+        VentanaAlgoritmos interfaz = new VentanaAlgoritmos();
+        interfaz.setVisible(true);
+        interfaz.setResizable(false);
+        interfaz.setLocationRelativeTo(null); 
     }
     
 }

@@ -19,111 +19,8 @@ import javax.swing.JFileChooser;
 import javax.swing.filechooser.*;
 
 public class Algoritmo {
-    public Algoritmo() throws Exception {
-        
-        VentanaAlgoritmos interfaz = new VentanaAlgoritmos();
-        interfaz.setVisible(true);
-        interfaz.setResizable(false);
-        interfaz.setLocationRelativeTo(null); 
-        
-        //generarActividades(50);
-        
-        Robot robotBase = new Robot(0, 0, new ArrayList<Actividad>());
-        Robot robotOptimo = new Robot(0, 0, new ArrayList<Actividad>());
-        
-        //Variables para determinar el tiempo de ejecución
-        long tiempoInicio, tiempoFin, tiempo;
-        
-        //Se inicia jfc
-        List<Actividad> listacargadaActividades = new ArrayList<Actividad>(cargarEntrada(selectEntrada()));
-        interfaz.setJListEntrada(listacargadaActividades);
-        
-        ///*  Algoritmo Organizar Entrada
-        tiempoInicio = System.currentTimeMillis(); 
-        List<Actividad> listaActividadesOrganizadas = new ArrayList<Actividad>(organizarActividades(listacargadaActividades));
-        tiempoFin = System.currentTimeMillis();
-        tiempo = tiempoFin - tiempoInicio;
-        interfaz.setJListEntradaOrdenada(listaActividadesOrganizadas, tiempo);
-        //*/
-        
-        //mostrar(listacargadaActividades.toString());
-        ///*Solo para realizar pruebas rapidas
-        Actividad  actividad1 = new Actividad("Actividad 1", convertirADate("2:00"), convertirADate("5:00"));
-        Actividad  actividad2 = new Actividad("Actividad 2", convertirADate("5:00"), convertirADate("7:00"));
-        Actividad  actividad3 = new Actividad("Actividad 3", convertirADate("2:00"), convertirADate("4:00"));
-        Actividad  actividad4 = new Actividad("Actividad 4", convertirADate("1:00"), convertirADate("3:00"));
-        Actividad  actividad5 = new Actividad("Actividad 5", convertirADate("4:00"), convertirADate("9:00"));
-        List<Actividad> listaActividades = new ArrayList<Actividad>(List.of(actividad1, actividad2, actividad3, actividad4, actividad5));
-        //*/
-
-
-  
-        ///*  Algoritmo 1 del Problema 1 Todas las posibles combinaciones Muy Costosa
-        tiempoInicio = System.currentTimeMillis(); 
-        Robot resultadoAlgoritmo1Problema1 = new Robot(robotOptimo);
-        algoritmo1Problema1(new Robot(robotBase), new ArrayList<Actividad>(listaActividadesOrganizadas), false, resultadoAlgoritmo1Problema1);
-        tiempoFin = System.currentTimeMillis();
-        tiempo = tiempoFin - tiempoInicio;
-        mostrar("Problema 1 Algoritmo 1: \n" + resultadoAlgoritmo1Problema1.toString() + "\nTiempo de ejecución en ms: " + tiempo + "\n-----------------------------");
-        interfaz.setJListAlgoritmo1Problema1(resultadoAlgoritmo1Problema1, tiempo);
-        guardarProblema1("Algoritmo1", resultadoAlgoritmo1Problema1);
-        //*/
-
-        ///*  Algoritmo 1 del Problema 1 Todas las posibles combinaciones Muy Costosa
-        tiempoInicio = System.currentTimeMillis(); 
-        Robot resultadoAlgoritmo1Problema1Variante = new Robot(robotOptimo);
-        algoritmo1Problema1Variante(new Robot(robotBase), new ArrayList<Actividad>(listaActividadesOrganizadas), false, resultadoAlgoritmo1Problema1Variante);
-        tiempoFin = System.currentTimeMillis();
-        tiempo = tiempoFin - tiempoInicio;
-        mostrar("Problema 1 Algoritmo 1 Variante: \n" + resultadoAlgoritmo1Problema1Variante.toString() + "\nTiempo de ejecución en ms: " + tiempo + "\n-----------------------------");
-        interfaz.setJListAlgoritmo1Problema1Variante(resultadoAlgoritmo1Problema1Variante, tiempo);
-        guardarProblema1("Algoritmo1Variante", resultadoAlgoritmo1Problema1Variante);
-        //*/
-
-        ///* Algoritmo 2 del Problema 1 Solución Voraz
-        tiempoInicio = System.currentTimeMillis(); 
-        Robot resultadoAlgoritmo2Problema1 = new Robot(robotOptimo);
-        algoritmo2Problema1(new Robot(robotBase), new ArrayList<Actividad>(listaActividadesOrganizadas), resultadoAlgoritmo2Problema1, convertirADate("00:00"));
-        tiempoFin = System.currentTimeMillis();
-        tiempo = tiempoFin - tiempoInicio;
-        mostrar("Problema 1 Algoritmo 2: \n" + resultadoAlgoritmo2Problema1.toString() + "\nTiempo de ejecución en ms: " + tiempo + "\n-----------------------------");
-        interfaz.setJListAlgoritmo2Problema1(resultadoAlgoritmo2Problema1, tiempo);
-        guardarProblema1("Algoritmo2", resultadoAlgoritmo2Problema1);
-        //*/
-
-        ///* Algoritmo 3 del Problema 1 Solución Voraz Que recorre de forma inversa
-        tiempoInicio = System.currentTimeMillis(); 
-        Robot resultadoAlgoritmo3Problema1 = new Robot(robotOptimo);
-        algoritmo3Problema1(new Robot(robotBase), new ArrayList<Actividad>(listaActividadesOrganizadas), resultadoAlgoritmo3Problema1, convertirADate("24:00"));
-        tiempoFin = System.currentTimeMillis();
-        tiempo = tiempoFin - tiempoInicio;
-        mostrar("Problema 1 Algoritmo 3: \n" + resultadoAlgoritmo3Problema1.toString() + "\nTiempo de ejecución en ms: " + tiempo + "\n-----------------------------");
-        interfaz.setJListAlgoritmo3Problema1(resultadoAlgoritmo3Problema1, tiempo);
-        guardarProblema1("Algoritmo3", resultadoAlgoritmo3Problema1);
-        //*/
-
-        ///* Algoritmo 1 del Problema 2 Solución Voraz Que recorre de forma inversa
-        tiempoInicio = System.currentTimeMillis(); 
-        Robot resultadoAlgoritmo1Problema2 = new Robot(robotOptimo);
-        algoritmo1Problema2(new Robot(robotBase), new ArrayList<Actividad>(listaActividadesOrganizadas), resultadoAlgoritmo1Problema2, convertirADate("00:00"));
-        tiempoFin = System.currentTimeMillis();
-        tiempo = tiempoFin - tiempoInicio;
-        mostrar("Problema 2 Algoritmo 1: \n" + resultadoAlgoritmo1Problema2.toString() + "\nTiempo de ejecución en ms: " + tiempo + "\n-----------------------------");
-        interfaz.setJListAlgoritmo1Problema2(resultadoAlgoritmo1Problema2, tiempo);
-        guardarProblema2("Algoritmo1", resultadoAlgoritmo1Problema2);
-        //*/   
-        
-        ///* Algoritmo 2 del Problema 2 Solución Voraz Que recorre de forma inversa
-        tiempoInicio = System.currentTimeMillis(); 
-        Robot resultadoAlgoritmo2Problema2 = new Robot(robotOptimo);
-        algoritmo2Problema2(new Robot(robotBase), new ArrayList<Actividad>(listaActividadesOrganizadas), false, resultadoAlgoritmo2Problema2);
-        tiempoFin = System.currentTimeMillis();
-        tiempo = tiempoFin - tiempoInicio;
-        mostrar("Problema 2 Algoritmo 2: \n" + resultadoAlgoritmo2Problema2.toString() + "\nTiempo de ejecución en ms: " + tiempo + "\n-----------------------------");
-        interfaz.setJListAlgoritmo2Problema2(resultadoAlgoritmo2Problema2, tiempo);
-        guardarProblema2("Algoritmo2", resultadoAlgoritmo2Problema2);
-        //*/  
-        
+    public Algoritmo(){
+                
     }
     
     public static File selectEntrada(){
@@ -143,8 +40,22 @@ public class Algoritmo {
                 return new File(path);
     }    
     
+    public static File selectSaveEntrada(){
+                JFileChooser jfc = new JFileChooser(FileSystemView.getFileSystemView().getHomeDirectory());
+                Path currentRelativePath = Paths.get("");
+                String directoryActual = currentRelativePath.toAbsolutePath().toString();
+                jfc.setCurrentDirectory(new File(directoryActual));
+                String path = "";
+		int returnValue = jfc.showSaveDialog(null);
+		if (returnValue == JFileChooser.APPROVE_OPTION) {
+			File selectedFile = jfc.getSelectedFile();
+			path = selectedFile.getAbsolutePath();
+		}  
+                return new File(path);
+    }
+    
     public static void algoritmo1Problema1(Robot robotbase, List<Actividad> listaActividades, Boolean detener, Robot robotoptimo){
-        if(detener){
+        if(detener || listaActividades.size() == 0){
             if (robotbase.getHorasTotal() > robotoptimo.getHorasTotal()) {
                 List<Actividad> actividadesRobotBase = robotbase.getActividades();
                 robotoptimo.clear();
@@ -157,7 +68,7 @@ public class Algoritmo {
         
         }else{
             for (int index = 0; index < listaActividades.size(); index++) {
-                if (!robotbase.verificarCruzada(listaActividades.get(index))) {   //Esto implica otro For recorriendo las actividades del Robot               
+                if (!robotbase.verificarCruzada(listaActividades.get(index))) {
                         robotbase.agregarActividad(listaActividades.get(index)); 
                         List<Actividad> listasinultimaactividad = new ArrayList<Actividad>(listaActividades);
                         listasinultimaactividad.remove(index);
@@ -370,31 +281,17 @@ public class Algoritmo {
         return listaResultado;  
     }
 
-    public static void generarActividades(int n){
-        try{
-            String path="entrada.txt";
-            File file = new File(path);
-
-            if (!file.exists()) {
-                file.createNewFile();
-            }
-            FileWriter fw = new FileWriter(file.getAbsoluteFile());
-            BufferedWriter bw = new BufferedWriter(fw);
-            
-            bw.write(Integer.toString(n));
-            bw.newLine();
-            for(int index=0; index < n; index++){
-                int a, b;
-                a = (int)(Math.random()*24+1);
-                b = (int)(Math.random()*a);
-                bw.write("Actividad"+Integer.toString(index+1) + " " + b + ":00 " + a + ":00");
-                bw.newLine();
-            }
-            bw.close();
-        }
-        catch(Exception e){
-            System.out.println(e);
-        }
+    public static List<Actividad> generarActividades(int n) throws Exception{
+        List<Actividad> listResultado = new ArrayList<Actividad>();
+        for(int index=0; index < n; index++){
+            int a, b;
+            String actividad = "";
+            a = (int)(Math.random()*24+1);
+            b = (int)(Math.random()*a);
+            actividad = "Actividad" + Integer.toString(index+1);
+            listResultado.add(new Actividad(actividad, convertirADate(Integer.toString(b)+":00"), convertirADate(Integer.toString(a)+":00")));
+        }    
+        return listResultado;
     }
 
     public static ArrayList<Actividad> cargarEntrada(File file){
@@ -435,6 +332,26 @@ public class Algoritmo {
     return listaActividades;
     }
 
+    public static void guardarEntrada(File file, List<Actividad> listaActividades){
+        try{
+            if (!file.exists()) {
+                file.createNewFile();
+            }
+            FileWriter fw = new FileWriter(file.getAbsoluteFile());
+            BufferedWriter bw = new BufferedWriter(fw);
+            bw.write(Integer.toString(listaActividades.size()));
+            bw.newLine();
+            for(int index=0; index < listaActividades.size(); index++){
+                bw.write(listaActividades.get(index).getNombre() + " " + listaActividades.get(index).getHoraInicio() + " " + listaActividades.get(index).getHoraFin());
+                bw.newLine();
+            }
+            bw.close();
+        }
+        catch(Exception e){
+            System.out.println(e);
+        }
+    }
+    
     public static void guardarProblema1(String rotulo, Robot robotOptimo){
         try{
             String path = "problema1" + rotulo + ".txt";
@@ -450,7 +367,7 @@ public class Algoritmo {
             bw.write(Integer.toString(robotOptimo.getHorasTotal()));
             bw.newLine();
             for(int index=0; index < robotOptimo.getActividades().size(); index++){
-                bw.write(robotOptimo.getActividades().get(index).toString());
+                bw.write(robotOptimo.getActividades().get(index).getNombre().toString());
                 bw.newLine();
             }
             bw.close();
@@ -473,7 +390,7 @@ public class Algoritmo {
             bw.write(Integer.toString(robotOptimo.getActividades().size()));
             bw.newLine();
             for(int index=0; index < robotOptimo.getActividades().size(); index++){
-                bw.write(robotOptimo.getActividades().get(index).toString());
+                bw.write(robotOptimo.getActividades().get(index).getNombre().toString());
                 bw.newLine();
             }
             bw.close();
