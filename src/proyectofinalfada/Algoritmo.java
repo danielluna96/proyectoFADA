@@ -18,7 +18,7 @@ import java.util.Date;
 import javax.swing.JFileChooser;
 import javax.swing.filechooser.*;
 
-public class Algoritmo {
+public class Algoritmo{
     public Algoritmo(){
                 
     }
@@ -294,7 +294,7 @@ public class Algoritmo {
         return listResultado;
     }
 
-    public static ArrayList<Actividad> cargarEntrada(File file){
+    public static List<Actividad> cargarEntrada(File file){
         ArrayList<Actividad> listaActividades = new ArrayList<Actividad>(List.of());
         try{
             //File file = new File("entrada.txt");
@@ -342,7 +342,11 @@ public class Algoritmo {
             bw.write(Integer.toString(listaActividades.size()));
             bw.newLine();
             for(int index=0; index < listaActividades.size(); index++){
-                bw.write(listaActividades.get(index).getNombre() + " " + listaActividades.get(index).getHoraInicio() + " " + listaActividades.get(index).getHoraFin());
+                if("00:00:00".equals(listaActividades.get(index).getHoraFin().toString())){
+                    bw.write(listaActividades.get(index).getNombre() + " " + listaActividades.get(index).getHoraInicio() + " " + "24:00:00");
+                }else {
+                    bw.write(listaActividades.get(index).getNombre() + " " + listaActividades.get(index).getHoraInicio() + " " + listaActividades.get(index).getHoraFin());
+                }
                 bw.newLine();
             }
             bw.close();

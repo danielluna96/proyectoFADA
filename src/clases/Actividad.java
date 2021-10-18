@@ -47,7 +47,12 @@ public class Actividad {
      */
     public String toString() {
         String cadena = "";
-        cadena += getNombre() + " | " + getHoraInicio().toString() + " | " + getHoraFin().toString();
+        if(getHoraFin().toString().equals("00:00:00")){
+            cadena += getNombre() + " | " + getHoraInicio().toString() + " | " + "24:00:00";
+        }else{
+            cadena += getNombre() + " | " + getHoraInicio().toString() + " | " + getHoraFin().toString();
+        }
+        
         return cadena;
     }
     

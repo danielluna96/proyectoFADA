@@ -19,7 +19,7 @@ import javax.swing.DefaultListModel;
  * @author danie
  */
 public class VentanaAlgoritmos extends javax.swing.JFrame {
-
+    private Thread thread1, thread2, thread3, thread4, thread5, thread6;
     private final Algoritmo algoritmos = new Algoritmo();
     private List<Actividad> listacargadaActividades = new ArrayList<Actividad>();
     public VentanaAlgoritmos() throws Exception {
@@ -75,6 +75,7 @@ public class VentanaAlgoritmos extends javax.swing.JFrame {
         guardarEntradaButton = new javax.swing.JButton();
         jLabel9 = new javax.swing.JLabel();
         jLabel10 = new javax.swing.JLabel();
+        stopThreadsButton = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("ProyectoLunaDiazCortezPerez");
@@ -180,6 +181,13 @@ public class VentanaAlgoritmos extends javax.swing.JFrame {
 
         jLabel10.setText("Nota: Los resultados se guardan en la carpeta base.");
 
+        stopThreadsButton.setText("Detener(Stop Threads)");
+        stopThreadsButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                stopThreadsButtonActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -195,46 +203,44 @@ public class VentanaAlgoritmos extends javax.swing.JFrame {
                     .addComponent(jScrollPane6, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(seleccionarEntradaButton)
                     .addComponent(guardarEntradaButton)
+                    .addComponent(jLabel10)
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(correrAlgoritmosButton)
+                        .addGap(18, 18, 18)
+                        .addComponent(stopThreadsButton))
                     .addGroup(layout.createSequentialGroup()
                         .addGap(10, 10, 10)
-                        .addComponent(lblAlgoritmo1Problema1))
-                    .addComponent(jLabel10)
-                    .addComponent(correrAlgoritmosButton))
-                .addGap(0, 22, Short.MAX_VALUE)
+                        .addComponent(lblAlgoritmo1Problema1)))
+                .addGap(40, 40, 40)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                        .addGap(28, 28, 28)
-                        .addComponent(lblAlgoritmo1Problema2)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 572, Short.MAX_VALUE))
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                        .addGap(40, 40, 40)
+                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addComponent(jLabel1)
+                        .addComponent(jScrollPane1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(jLabel3)
+                        .addComponent(jLabel7)
+                        .addComponent(jScrollPane7, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(10, 10, 10)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                .addComponent(jLabel1)
-                                .addComponent(jScrollPane1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addComponent(jLabel3)
-                                .addComponent(jLabel7)
-                                .addComponent(jScrollPane7, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addComponent(lblAlgoritmo1Problema1Variante)
-                            .addGroup(layout.createSequentialGroup()
-                                .addGap(10, 10, 10)
-                                .addComponent(lblCantidadActividades)))
-                        .addGap(40, 40, 40)
+                            .addComponent(lblCantidadActividades)
+                            .addComponent(lblAlgoritmo1Problema2)
+                            .addComponent(lblAlgoritmo1Problema1Variante))))
+                .addGap(40, 40, 40)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jScrollPane8, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel8)
+                    .addComponent(jScrollPane4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel4)
+                    .addComponent(jLabel2)
+                    .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(10, 10, 10)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jScrollPane8, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jLabel8)
-                            .addComponent(jScrollPane4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jLabel4)
-                            .addComponent(jLabel2)
-                            .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addGroup(layout.createSequentialGroup()
-                                .addGap(10, 10, 10)
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(lblEntradaOrdenadaTime)
-                                    .addComponent(lblAlgoritmo2Problema2)
-                                    .addComponent(lblAlgoritmo2Problema1))))
-                        .addGap(40, 40, 40)))
+                            .addComponent(lblEntradaOrdenadaTime)
+                            .addComponent(lblAlgoritmo2Problema2)
+                            .addComponent(lblAlgoritmo2Problema1))))
+                .addGap(40, 40, 40)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jLabel5)
                     .addComponent(jScrollPane5, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -269,7 +275,9 @@ public class VentanaAlgoritmos extends javax.swing.JFrame {
                             .addComponent(generarEntradaButton)
                             .addComponent(jSpinnerCantidadActividades, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(correrAlgoritmosButton)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(correrAlgoritmosButton)
+                            .addComponent(stopThreadsButton))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(guardarEntradaButton)
                         .addGap(18, 18, 18)
@@ -295,25 +303,26 @@ public class VentanaAlgoritmos extends javax.swing.JFrame {
                             .addGroup(layout.createSequentialGroup()
                                 .addGap(6, 6, 6)
                                 .addComponent(jScrollPane5, javax.swing.GroupLayout.PREFERRED_SIZE, 208, javax.swing.GroupLayout.PREFERRED_SIZE)))))
-                .addGap(14, 14, 14)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(lblAlgoritmo1Problema1)
                     .addGroup(layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(lblAlgoritmo2Problema1)
+                            .addComponent(lblAlgoritmo1Problema1Variante)
                             .addGroup(layout.createSequentialGroup()
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(lblAlgoritmo2Problema1)
-                                    .addComponent(lblAlgoritmo1Problema1Variante))
-                                .addGap(35, 35, 35)
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                                    .addComponent(jLabel7)
-                                    .addComponent(jLabel8)))
-                            .addComponent(lblAlgoritmo3Problema1))
+                                .addGap(6, 6, 6)
+                                .addComponent(lblAlgoritmo3Problema1)))
+                        .addGap(29, 29, 29)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(jLabel7)
+                            .addComponent(jLabel8)))
+                    .addGroup(layout.createSequentialGroup()
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jLabel9, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jScrollPane8, javax.swing.GroupLayout.PREFERRED_SIZE, 196, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jScrollPane7, javax.swing.GroupLayout.PREFERRED_SIZE, 198, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                        .addComponent(lblAlgoritmo1Problema1)))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jLabel9, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jScrollPane8, javax.swing.GroupLayout.PREFERRED_SIZE, 196, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jScrollPane7, javax.swing.GroupLayout.PREFERRED_SIZE, 198, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(lblAlgoritmo2Problema2)
@@ -325,7 +334,7 @@ public class VentanaAlgoritmos extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void limpiarJList(){
-        jListEntrada.setModel(new DefaultListModel());
+        //jListEntrada.setModel(new DefaultListModel());
         jListEntradaOrdenada.setModel(new DefaultListModel());
         jListAlgoritmo1Problema1.setModel(new DefaultListModel());
         jListAlgoritmo1Problema1Variante.setModel(new DefaultListModel());
@@ -333,7 +342,12 @@ public class VentanaAlgoritmos extends javax.swing.JFrame {
         jListAlgoritmo3Problema1.setModel(new DefaultListModel());
         jListAlgoritmo1Problema2.setModel(new DefaultListModel());
         jListAlgoritmo2Problema2.setModel(new DefaultListModel());jListAlgoritmo1Problema1.setModel(new DefaultListModel());
-        
+        lblAlgoritmo1Problema1.setText("Time(ms): ");
+        lblAlgoritmo1Problema1Variante.setText("Time(ms): ");
+        lblAlgoritmo2Problema1.setText("Time(ms): ");
+        lblAlgoritmo3Problema1.setText("Time(ms): ");
+        lblAlgoritmo1Problema2.setText("Time(ms): ");
+        lblAlgoritmo2Problema2.setText("Time(ms): ");
     }
     
     private void generarEntradaButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_generarEntradaButtonActionPerformed
@@ -353,6 +367,7 @@ public class VentanaAlgoritmos extends javax.swing.JFrame {
     }//GEN-LAST:event_seleccionarEntradaButtonActionPerformed
 
     private void correrAlgoritmosButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_correrAlgoritmosButtonActionPerformed
+        limpiarJList();
         try {
             correrAlgoritmos(listacargadaActividades);
         } catch (Exception ex) {
@@ -362,8 +377,34 @@ public class VentanaAlgoritmos extends javax.swing.JFrame {
 
     private void guardarEntradaButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_guardarEntradaButtonActionPerformed
         algoritmos.guardarEntrada(algoritmos.selectSaveEntrada(), listacargadaActividades);
-        //setJListEntrada(listacargadaActividades);
     }//GEN-LAST:event_guardarEntradaButtonActionPerformed
+
+    private void stopThreadsButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_stopThreadsButtonActionPerformed
+        if(thread1 != null){
+            thread1.stop();
+            lblAlgoritmo1Problema1.setText("Tratando de detener");
+        }
+        if(thread2 != null){
+            thread2.stop();
+            lblAlgoritmo1Problema1Variante.setText("Tratando de detener");
+        }
+        if(thread3 != null){
+            thread3.stop();
+            lblAlgoritmo2Problema1.setText("Tratando de detener");
+        }
+        if(thread4 != null){
+            thread4.stop();
+            lblAlgoritmo3Problema1.setText("Tratando de detener");
+        }
+        if(thread5 != null){
+            thread5.stop();
+            lblAlgoritmo1Problema2.setText("Tratando de detener");
+        }
+        if(thread6 != null){
+            thread6.stop();
+            lblAlgoritmo2Problema2.setText("Tratando de detener");
+        }  
+    }//GEN-LAST:event_stopThreadsButtonActionPerformed
 
     private void setup() throws Exception{
         listacargadaActividades = new ArrayList<Actividad>(algoritmos.cargarEntrada(algoritmos.selectEntrada()));
@@ -392,29 +433,46 @@ public class VentanaAlgoritmos extends javax.swing.JFrame {
         setJListEntradaOrdenada(listaActividadesOrganizadas, tiempo);
         //*/
 
-  
         ///*  Algoritmo 1 del Problema 1 Todas las posibles combinaciones Muy Costosa
-        tiempoInicio = System.currentTimeMillis(); 
-        Robot resultadoAlgoritmo1Problema1 = new Robot(robotOptimo);
-        algoritmos.algoritmo1Problema1(new Robot(robotBase), new ArrayList<Actividad>(listaActividadesOrganizadas), false, resultadoAlgoritmo1Problema1);
-        tiempoFin = System.currentTimeMillis();
-        tiempo = tiempoFin - tiempoInicio;
-        algoritmos.mostrar("Problema 1 Algoritmo 1: \n" + resultadoAlgoritmo1Problema1.toString() + "\nTiempo de ejecución en ms: " + tiempo + "\n-----------------------------");
-        setJListAlgoritmo1Problema1(resultadoAlgoritmo1Problema1, tiempo);
-        algoritmos.guardarProblema1("Algoritmo1", resultadoAlgoritmo1Problema1);
+        Runnable algoritmo1Problema1 = new Runnable(){
+            @Override
+            public void run(){
+                long tiempoInicio, tiempoFin, tiempo;
+                tiempoInicio = System.currentTimeMillis();
+                Robot resultadoAlgoritmo1Problema1 = new Robot(robotOptimo);
+                lblAlgoritmo1Problema1.setText("Calculando esto puede tardar");
+                algoritmos.algoritmo1Problema1(new Robot(robotBase), new ArrayList<Actividad>(listaActividadesOrganizadas), false, resultadoAlgoritmo1Problema1);
+                tiempoFin = System.currentTimeMillis();
+                tiempo = tiempoFin - tiempoInicio;
+                algoritmos.mostrar("Problema 1 Algoritmo 1: \n" + resultadoAlgoritmo1Problema1.toString() + "\nTiempo de ejecución en ms: " + tiempo + "\n-----------------------------");
+                setJListAlgoritmo1Problema1(resultadoAlgoritmo1Problema1, tiempo);
+                algoritmos.guardarProblema1("Algoritmo1", resultadoAlgoritmo1Problema1);    
+            }
+        };
+        thread1 = new Thread(algoritmo1Problema1);
+        thread1.start();       
         //*/
-
-        ///*  Algoritmo 1 del Problema 1 Todas las posibles combinaciones Muy Costosa
-        tiempoInicio = System.currentTimeMillis(); 
-        Robot resultadoAlgoritmo1Problema1Variante = new Robot(robotOptimo);
-        algoritmos.algoritmo1Problema1Variante(new Robot(robotBase), new ArrayList<Actividad>(listaActividadesOrganizadas), false, resultadoAlgoritmo1Problema1Variante);
-        tiempoFin = System.currentTimeMillis();
-        tiempo = tiempoFin - tiempoInicio;
-        algoritmos.mostrar("Problema 1 Algoritmo 1 Variante: \n" + resultadoAlgoritmo1Problema1Variante.toString() + "\nTiempo de ejecución en ms: " + tiempo + "\n-----------------------------");
-        setJListAlgoritmo1Problema1Variante(resultadoAlgoritmo1Problema1Variante, tiempo);
-        algoritmos.guardarProblema1("Algoritmo1Variante", resultadoAlgoritmo1Problema1Variante);
+        
+        ///*  Algoritmo 1 del Problema 1 Variante Todas las posibles combinaciones Muy Costosa
+        Runnable algoritmo1Problema1Variante = new Runnable(){
+            @Override
+            public void run(){
+                long tiempoInicio, tiempoFin, tiempo;
+                tiempoInicio = System.currentTimeMillis(); 
+                Robot resultadoAlgoritmo1Problema1Variante = new Robot(robotOptimo);
+                lblAlgoritmo1Problema1Variante.setText("Calculando esto puede tardar");
+                algoritmos.algoritmo1Problema1Variante(new Robot(robotBase), new ArrayList<Actividad>(listaActividadesOrganizadas), false, resultadoAlgoritmo1Problema1Variante);
+                tiempoFin = System.currentTimeMillis();
+                tiempo = tiempoFin - tiempoInicio;
+                algoritmos.mostrar("Problema 1 Algoritmo 1 Variante: \n" + resultadoAlgoritmo1Problema1Variante.toString() + "\nTiempo de ejecución en ms: " + tiempo + "\n-----------------------------");
+                setJListAlgoritmo1Problema1Variante(resultadoAlgoritmo1Problema1Variante, tiempo);
+                algoritmos.guardarProblema1("Algoritmo1Variante", resultadoAlgoritmo1Problema1Variante);
+            }
+        };
+        thread1 = new Thread(algoritmo1Problema1Variante);
+        thread1.start();
         //*/
-
+        
         ///* Algoritmo 2 del Problema 1 Solución Voraz
         tiempoInicio = System.currentTimeMillis(); 
         Robot resultadoAlgoritmo2Problema1 = new Robot(robotOptimo);
@@ -449,16 +507,24 @@ public class VentanaAlgoritmos extends javax.swing.JFrame {
         //*/   
         
         ///* Algoritmo 2 del Problema 2 Solución Voraz Que recorre de forma inversa
-        tiempoInicio = System.currentTimeMillis(); 
-        Robot resultadoAlgoritmo2Problema2 = new Robot(robotOptimo);
-        algoritmos.algoritmo2Problema2(new Robot(robotBase), new ArrayList<Actividad>(listaActividadesOrganizadas), false, resultadoAlgoritmo2Problema2);
-        tiempoFin = System.currentTimeMillis();
-        tiempo = tiempoFin - tiempoInicio;
-        algoritmos.mostrar("Problema 2 Algoritmo 2: \n" + resultadoAlgoritmo2Problema2.toString() + "\nTiempo de ejecución en ms: " + tiempo + "\n-----------------------------");
-        setJListAlgoritmo2Problema2(resultadoAlgoritmo2Problema2, tiempo);
-        algoritmos.guardarProblema2("Algoritmo2", resultadoAlgoritmo2Problema2);
-        //*/  
-
+        Runnable algoritmo2Problema2 = new Runnable(){
+            @Override
+            public void run(){
+                long tiempoInicio, tiempoFin, tiempo;
+                lblAlgoritmo2Problema2.setText("Calculando esto puede tardar");
+                tiempoInicio = System.currentTimeMillis(); 
+                Robot resultadoAlgoritmo2Problema2 = new Robot(robotOptimo);
+                algoritmos.algoritmo2Problema2(new Robot(robotBase), new ArrayList<Actividad>(listaActividadesOrganizadas), false, resultadoAlgoritmo2Problema2);
+                tiempoFin = System.currentTimeMillis();
+                tiempo = tiempoFin - tiempoInicio;
+                algoritmos.mostrar("Problema 2 Algoritmo 2: \n" + resultadoAlgoritmo2Problema2.toString() + "\nTiempo de ejecución en ms: " + tiempo + "\n-----------------------------");
+                setJListAlgoritmo2Problema2(resultadoAlgoritmo2Problema2, tiempo);
+                algoritmos.guardarProblema2("Algoritmo2", resultadoAlgoritmo2Problema2);
+            }
+        };
+        thread1 = new Thread(algoritmo2Problema2);
+        thread1.start();
+        //*/
     }
     
     public void setJListEntrada(List<Actividad> lista){
@@ -613,5 +679,6 @@ public class VentanaAlgoritmos extends javax.swing.JFrame {
     private javax.swing.JLabel lblCantidadActividades;
     private javax.swing.JLabel lblEntradaOrdenadaTime;
     private javax.swing.JButton seleccionarEntradaButton;
+    private javax.swing.JButton stopThreadsButton;
     // End of variables declaration//GEN-END:variables
 }
